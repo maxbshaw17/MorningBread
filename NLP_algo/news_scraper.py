@@ -1,17 +1,24 @@
 #import libraries
 import requests
+from requests_html import HTMLSession
 from bs4 import BeautifulSoup
 
-#investing.com
+#----------------------
+#finviz
+#----------------------
 
-#url of source
-url = "https://www.investing.com/news/latest-news"
+url = "https://finviz.com/news.ashx"
 
-#create beatifulsoup object using the url
-page = BeautifulSoup(requests.get(url).content, "html.parser")
+#create page object and render javascript to readable html
+session = HTMLSession()
+response = session.get(url)
+print(response)
 
-print(page)
+articles = response.html.xpath("//a[@class='tab-link']")
 
-articles = page.find_all("article", class_="js-article-item articleItem     ")
+article_text = []
+
 for article in articles:
-    print(article)
+    article_text.append(article.text)
+
+print(article_text)
