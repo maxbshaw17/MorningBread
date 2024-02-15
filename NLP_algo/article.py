@@ -1,13 +1,13 @@
 import datetime
 
 class Article:
-    def __init__(self, headline, link, date = datetime.fromtimestamp(0)):
+    def __init__(self, headline, link, date = datetime.datetime(1970, 1, 1)):
         self.headline = headline
         self.link = link
         self.date = date
     
-    def _str__(self):
-        return f"{self.headline}, {self.date}, {self.link}"
+    def __str__(self):
+        return f"{self.headline}, {self.date.strftime("%x")}, {self.link}"
     
     #getters and setters
     def getHeadline(self):
