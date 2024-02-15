@@ -15,6 +15,17 @@ body {
   z-index: 999;
 }
 
+.navigation_profile {
+  box-sizing: border-box;
+  background-color: #80c6df;
+  overflow: auto;
+  padding: 18px 50px;
+  position: relative;
+  top: 0;
+  width: 100%;
+  z-index: 999;
+}
+
 h1 {
   color: rgb(45, 45, 45);
   text-align: center;
