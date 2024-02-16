@@ -2,7 +2,6 @@ body {
   background: #dcdcdc;
   margin: 0;
   font-family: 'Franklin Gothic Medium', sans-serif;
-  
 }
 
 .navigation {
@@ -23,6 +22,7 @@ header {
   margin-bottom: 30px;
 }
 
+
 .navigation_profile {
   box-sizing: border-box;
   background-color: #80c6df;
@@ -40,7 +40,7 @@ header {
   z-index: 3;
   width: 25%; 
   align-items: center;
-  margin: 0 20px;
+  margin: 0 auto;
   padding: 170px 30px 54px;
   border-radius: 24px;
   text-align: center;
@@ -58,8 +58,9 @@ header {
   width: 1000px;
   height: 1000px;
   border-radius: 50%;
-  background-color: #216ce7;
+  background-color: #086788;
 }
+
 .background::after {
   content: "";
   position: inherit;
@@ -84,7 +85,7 @@ header {
   font-size: 22px;
   font-weight: 400;
   margin: 0 0 38px;
-  color: rgb(0 0 0 / 38%)
+  color: rgb(0 0 0 / 48%)
 }
 
 .form {
@@ -115,7 +116,7 @@ header {
 .form > button {
   border: 0;
   color: #f9f9f9;
-  background-color: #226ce7;
+  background-color: #086788;
   display: grid;
   place-items: center;
   font-weight: 500;
@@ -128,7 +129,7 @@ header {
 }
 
 .card > .profile_footer > a {
-  color: #216ce7;
+  color: #086788;
 }
 
 /* End of profile.html */
@@ -170,7 +171,7 @@ li:hover {
 }
 
 footer {
-  background-color: rgb(156, 156, 156);
+  background-color: #a1a1a1;
   background-position: center;
   text-align: center;
   position: fixed;
