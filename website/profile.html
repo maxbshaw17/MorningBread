@@ -1,15 +1,36 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <link rel="icon" href="placeholder_image.png">
         <title>MorningBread | Profile</title>
         <link href="style.css" type="text/css" rel="stylesheet">
     </head>
     <body>
+    <header>
     <h1>MorningBread</h1>
     <ul class="navigation_profile">
-        <li>Articles</li>
+        <li><a href= 'main.html' target ='_blank' class = 'active'>Articles</a></li>
         <li>Tickers</li>
         <li><a href= 'profile.html' target ='_blank' class = 'active'>Profile</a></li>
       </ul>
+    </header>
+      <div class = 'background'></div>
+      <div class = 'card'>
+        <img class = 'logo' src = 'placeholder_image.png' />
+        <h2>Welcome Back</h2>
+        <form class = 'form'>
+            <input 
+                type = "email"
+                placeholder = "Username" />
+            <input 
+                type = "password"
+                placeholder = "Password" />
+            <button>Sign In</button>
+        </form>
+        <div class = 'profile_footer'>
+            Need an account? Sign up
+            <a href='#'>here</a>
+        </div>
+    </div>
     </body>
 </html>

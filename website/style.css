@@ -1,7 +1,8 @@
 body {
   background: #dcdcdc;
   margin: 0;
-  padding: 0;
+  font-family: 'Franklin Gothic Medium', sans-serif;
+  
 }
 
 .navigation {
@@ -15,6 +16,13 @@ body {
   z-index: 999;
 }
 
+/* CSS for profile.html */
+
+header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
 .navigation_profile {
   box-sizing: border-box;
   background-color: #80c6df;
@@ -25,6 +33,105 @@ body {
   width: 100%;
   z-index: 999;
 }
+
+.card {
+  overflow: hidden;
+  position: relative;
+  z-index: 3;
+  width: 25%; 
+  align-items: center;
+  margin: 0 20px;
+  padding: 170px 30px 54px;
+  border-radius: 24px;
+  text-align: center;
+  box-shadow: 0 100px 100px
+  rgb(0 0 0 / 10%);
+  background-color: #ffffff
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  top: -880px;
+  left: 50%;
+  translate: -50% 0;
+  width: 1000px;
+  height: 1000px;
+  border-radius: 50%;
+  background-color: #216ce7;
+}
+.background::after {
+  content: "";
+  position: inherit;
+  right: -50vmin;
+  bottom: -55vmin;
+  width: inherit;
+  height: inherit;
+  border-radius: inherit;
+  background-color: #143d81;
+}
+
+.card .logo {
+  position: absolute; 
+  top: 25px;
+  left: 50%;
+  translate: -50% 0;
+  width: 84px;
+  height: 84px;
+}
+
+.card > h2 {
+  font-size: 22px;
+  font-weight: 400;
+  margin: 0 0 38px;
+  color: rgb(0 0 0 / 38%)
+}
+
+.form {
+  margin: 0 0 44px;
+  display: grid;
+  gap: 12px;
+}
+
+.form 
+:is(input, button) {
+  height: 56px;
+  border-radius: 28px;
+  font-size: 16px;
+  font-family: inherit;
+}
+
+.form > input {
+  border: 0;
+  padding: 0 24px;
+  color: #222222;
+  background-color: #ededed;
+}
+
+.form > input::placeholder {
+  color: rgb(0 0 0 / 28%)
+}
+
+.form > button {
+  border: 0;
+  color: #f9f9f9;
+  background-color: #226ce7;
+  display: grid;
+  place-items: center;
+  font-weight: 500;
+  cursor: pointer;
+  width: 100%;
+}
+
+.card > .profile_footer {
+  color: #a1a1a1;
+}
+
+.card > .profile_footer > a {
+  color: #216ce7;
+}
+
+/* End of profile.html */
 
 h1 {
   color: rgb(45, 45, 45);
