@@ -134,6 +134,21 @@ header {
 
 /* End of profile.html */
 
+/* contact.html */
+
+.contact h1 {
+  font-size: 60px;
+  text-align: left;
+  padding-left: 120px;
+  padding-top: 60px;
+}
+
+.contact h4 {
+  color: rgb(45, 45, 45);
+  font-size: 20px;
+  padding-left: 120px;
+}
+
 h1 {
   color: rgb(45, 45, 45);
   text-align: center;
@@ -180,4 +195,16 @@ footer {
   width: 100%;
   padding: 12px 8px 10px;
   height: 38px; 
+}
+
+h3 {
+  right: 0;
+  bottom: 0;
+  padding: 0px 14px;
+  position: absolute;
+}
+
+h3 a {
+  text-decoration: none;
+  color:#222222
 }
