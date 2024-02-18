@@ -136,18 +136,77 @@ header {
 
 /* contact.html */
 
+.contact-wrapper {
+  display: flex;
+}
+
+.contact_card {
+  overflow: hidden;
+  position: relative;
+  margin-left: 20%;
+  margin-top: 3%;
+  z-index: 3;
+  width: 25%;
+  padding: 30px 50px 54px;
+  border-radius: 10px;
+  text-align: left;
+  box-shadow: 0 100px 100px
+  rgb(0 0 0 / 10%);
+  background-color: #ffffff
+}
+
+.contact_form > input {
+  border: 0;
+  border-radius: 12px;
+  padding: 18px 20px;
+  color: #222222;
+  background-color: #ededed;
+}
+
+.contact_form > textarea {
+  font-family: sans-serif;
+  border: 0;
+  border-radius: 12px;
+  padding: 18px 20px;
+  color: #222222;
+  background-color: #ededed;
+  max-width: 89%; 
+  max-height: 90px; 
+  overflow-y: auto;
+}
+
+.contact_form input[type="email"] {
+  width: 90%;
+  padding: 18px;
+  border: 0;
+  border-radius: 12px;
+}
+
+.contact_form > button {
+  border: 0;
+  color: #FFF;
+  background-color: #086788;
+  border-radius: 12px;
+  cursor: pointer;
+  padding: 12px 20px;
+  font-family: 'Franklin Gothic Medium', sans-serif;
+  font-size: 15px;
+}
+
 .contact h1 {
   font-size: 60px;
   text-align: left;
-  padding-left: 120px;
+  padding-left: 220px;
   padding-top: 60px;
 }
 
 .contact h4 {
   color: rgb(45, 45, 45);
-  font-size: 20px;
-  padding-left: 120px;
+  font-size: 22px;
+  padding-left: 220px;
 }
+
+/* End of contact.html */
 
 h1 {
   color: rgb(45, 45, 45);
