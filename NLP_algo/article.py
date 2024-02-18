@@ -7,7 +7,7 @@ class Article:
         self.date = date
     
     def __str__(self):
-        return f"{self.headline}, {self.date.strftime("%x")}, {self.link}"
+        return f"{self.headline}, {self.date}, {self.link}"
     
     #getters and setters
     def getHeadline(self):
