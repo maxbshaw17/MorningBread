@@ -2,7 +2,6 @@ body {
   background: #dcdcdc;
   margin: 0;
   font-family: 'Franklin Gothic Medium', sans-serif;
-  
 }
 
 .navigation {
@@ -23,6 +22,7 @@ header {
   margin-bottom: 30px;
 }
 
+
 .navigation_profile {
   box-sizing: border-box;
   background-color: #80c6df;
@@ -40,7 +40,7 @@ header {
   z-index: 3;
   width: 25%; 
   align-items: center;
-  margin: 0 20px;
+  margin: 0 auto;
   padding: 170px 30px 54px;
   border-radius: 24px;
   text-align: center;
@@ -58,8 +58,9 @@ header {
   width: 1000px;
   height: 1000px;
   border-radius: 50%;
-  background-color: #216ce7;
+  background-color: #086788;
 }
+
 .background::after {
   content: "";
   position: inherit;
@@ -84,7 +85,7 @@ header {
   font-size: 22px;
   font-weight: 400;
   margin: 0 0 38px;
-  color: rgb(0 0 0 / 38%)
+  color: rgb(0 0 0 / 48%)
 }
 
 .form {
@@ -115,7 +116,7 @@ header {
 .form > button {
   border: 0;
   color: #f9f9f9;
-  background-color: #226ce7;
+  background-color: #086788;
   display: grid;
   place-items: center;
   font-weight: 500;
@@ -128,10 +129,96 @@ header {
 }
 
 .card > .profile_footer > a {
-  color: #216ce7;
+  color: #086788;
 }
 
 /* End of profile.html */
+
+/* contact.html */
+
+.contact-wrapper {
+  display: flex;
+}
+
+.contact_card {
+  overflow: hidden;
+  position: relative;
+  margin-left: 20%;
+  margin-top: 3%;
+  z-index: 3;
+  width: 25%;
+  padding: 30px 50px 54px;
+  border-radius: 10px;
+  text-align: left;
+  box-shadow: 0 100px 100px
+  rgb(0 0 0 / 10%);
+  background-color: #ffffff
+}
+
+.contact_card::before {
+  content: "";
+  position: absolute;
+  top: -880px;
+  left: 98%;
+  translate: -50% 0;
+  width: 1000px;
+  height: 1000px;
+  border-radius: 50%;
+  background-color: #086788;
+}
+
+.contact_form > input {
+  border: 0;
+  border-radius: 12px;
+  padding: 18px 20px;
+  color: #222222;
+  background-color: #ededed;
+}
+
+.contact_form > textarea {
+  font-family: sans-serif;
+  border: 0;
+  border-radius: 12px;
+  padding: 18px 20px;
+  color: #222222;
+  background-color: #ededed;
+  max-width: 89%; 
+  max-height: 90px; 
+  overflow-y: auto;
+}
+
+.contact_form input[type="email"] {
+  width: 90%;
+  padding: 18px;
+  border: 0;
+  border-radius: 12px;
+}
+
+.contact_form > button {
+  border: 0;
+  color: #FFF;
+  background-color: #086788;
+  border-radius: 12px;
+  cursor: pointer;
+  padding: 12px 20px;
+  font-family: 'Franklin Gothic Medium', sans-serif;
+  font-size: 15px;
+}
+
+.contact h1 {
+  font-size: 60px;
+  text-align: left;
+  padding-left: 220px;
+  padding-top: 60px;
+}
+
+.contact h4 {
+  color: rgb(45, 45, 45);
+  font-size: 22px;
+  padding-left: 220px;
+}
+
+/* End of contact.html */
 
 h1 {
   color: rgb(45, 45, 45);
@@ -170,7 +257,7 @@ li:hover {
 }
 
 footer {
-  background-color: rgb(156, 156, 156);
+  background-color: #a1a1a1;
   background-position: center;
   text-align: center;
   position: fixed;
@@ -179,4 +266,16 @@ footer {
   width: 100%;
   padding: 12px 8px 10px;
   height: 38px; 
+}
+
+h3 {
+  right: 0;
+  bottom: 0;
+  padding: 0px 14px;
+  position: absolute;
+}
+
+h3 a {
+  text-decoration: none;
+  color:#222222
 }
