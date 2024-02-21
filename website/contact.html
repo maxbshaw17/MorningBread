@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>MorningBread</title>
+        <title>MorningBread | Contact</title>
         <link rel="icon" href="placeholder_image.png">
         <link href="style.css" type="text/css" rel="stylesheet">
     </head>
@@ -34,11 +34,32 @@
             type = "message" name="message" required></textarea>
         <br>
         <br>
-        <button type="submit">Submit</button>
+        <button type="submit" onclick = "showThankYouMessage()">Submit</button>
     </form>
 </div>
 </div>
     </body>
+    <div class="popup-container">
+        <div class="popup">
+            <p>Thank you for submitting the form!</p>
+            <div class="close-button">
+                <button onclick="closePopup()">Go back to MorningBread</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        function showThankYouMessage() {
+            // Show the pop-up
+            const popupContainer = document.querySelector('.popup-container');
+            popupContainer.style.display = 'block';
+        }
+
+        function closePopup() {
+            // Hide the pop-up
+            const popupContainer = document.querySelector('.popup-container');
+            popupContainer.style.display = 'none';
+        }
+    </script>
     <footer>
         <a href = 'https://github.com/maxbshaw17/MorningBread' target = '_blank'>
             <img src = 'https://cdn-icons-png.flaticon.com/512/25/25231.png'

@@ -1,12 +1,12 @@
 body {
-  background: #dcdcdc;
+  background: #1E1E23;
   margin: 0;
   font-family: 'Franklin Gothic Medium', sans-serif;
 }
 
 .navigation {
   box-sizing: border-box;
-  background-color: #80c6df;
+  background-color: #6C97A6;
   overflow: auto;
   padding: 18px 50px;
   position: relative;
@@ -24,7 +24,7 @@ header {
 
 .navigation_profile {
   box-sizing: border-box;
-  background-color: #80c6df;
+  background-color: #6C97A6;
   overflow: auto;
   padding: 18px 50px;
   position: relative;
@@ -45,7 +45,7 @@ header {
   border-radius: 24px;
   text-align: center;
   box-shadow: 0 100px 100px
-  rgb(0 0 0 / 10%);
+  rgba(255, 255, 255, 0.1);
   background-color: #ffffff
 }
 
@@ -58,7 +58,7 @@ header {
   width: 1000px;
   height: 1000px;
   border-radius: 50%;
-  background-color: #086788;
+  background-color: #37778d;
 }
 
 .background::after {
@@ -117,7 +117,7 @@ header {
 .form > button {
   border: 0;
   color: #f9f9f9;
-  background-color: #086788;
+  background-color: #37778d;
   display: grid;
   place-items: center;
   font-weight: 500;
@@ -154,7 +154,7 @@ header {
   border-radius: 10px;
   text-align: left;
   box-shadow: 0 100px 100px
-  rgb(0 0 0 / 10%);
+  rgba(255, 255, 255, 0.1);
   background-color: #ffffff
 }
 
@@ -167,7 +167,7 @@ header {
   width: 1000px;
   height: 1000px;
   border-radius: 50%;
-  background-color: #086788;
+  background-color: #37778d;
 }
 
 .contact_form > input {
@@ -200,7 +200,7 @@ header {
 .contact_form > button {
   border: 0;
   color: #FFF;
-  background-color: #086788;
+  background-color: #37778d;
   border-radius: 12px;
   cursor: pointer;
   padding: 12px 20px;
@@ -216,15 +216,58 @@ header {
 }
 
 .contact h4 {
-  color: rgb(45, 45, 45);
+  color: #efefef;
   font-size: 22px;
   padding-left: 220px;
 }
 
 /* End of contact.html */
 
+/* Pop-up after submitting the contact form */
+
+.popup-container {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.popup {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.popup.active {
+  display: block;
+}
+
+.close-button > button {
+  border: 0;
+  border-radius: 10px;
+  color: #efefef;
+  background-color: #37778d;
+  display: grid;
+  place-items: center;
+  font-size: 15px;
+  cursor: pointer;
+  font-family: 'Franklin Gothic Medium', sans-serif;
+  width: 100%;
+  height: 3.5vh;
+}
+
+/* End of pop-up after submitting contact form */
+
 h1 {
-  color: rgb(45, 45, 45);
+  color: #efefef;
   text-align: center;
   font-family: 'Franklin Gothic Medium', sans-serif;
 }
@@ -236,7 +279,7 @@ ul {
 }
 
 li {
-  color: #FFF;
+  color: #efefef;
   display: inline-block;
   font-family: 'Oxygen', sans-serif;
   font-size: 16px;
@@ -253,21 +296,22 @@ li a {
 }
 
 li:hover {
-  background-color: rgb(45, 45, 45);
+  background-color: #37778d;
   opacity: 0.80;
   padding: 8px 8px 6px 10px;
   border-radius: 10px;
 }
 
 footer {
-  background-color: #a1a1a1;
+  background-color: #2A2A30;
   background-position: center;
   text-align: center;
   position: fixed;
-  bottom: 0;
+  bottom: 0px;
   left: 0;
   width: 100%;
-  padding: 10px 8px;
+  padding-top: 1.5vh;
+  padding-bottom: 1vh;
   z-index: 9999; 
 }
 
@@ -280,5 +324,5 @@ footer > h3 {
 
 h3 a {
   text-decoration: none;
-  color:#222222
+  color: #efefef;
 }
