@@ -34,7 +34,7 @@
             type = "message" name="message" required></textarea>
         <br>
         <br>
-        <button type="submit" onclick = "showThankYouMessage()">Submit</button>
+        <button type="submit" onclick = "onSubmitForm()">Submit</button>
     </form>
 </div>
 </div>
@@ -48,18 +48,35 @@
         </div>
     </div>
     <script>
-        function showThankYouMessage() {
-            // Show the pop-up
-            const popupContainer = document.querySelector('.popup-container');
-            popupContainer.style.display = 'block';
+    document.addEventListener('DOMContentLoaded', function () {
+        const hasSubmitted = sessionStorage.getItem('formSubmitted');
+        
+        if (hasSubmitted) {
+            // If the form has been submitted, show the popup
+            showThankYouMessage();
+            
+            // Clear the flag to avoid showing the popup on subsequent page loads
+            sessionStorage.removeItem('formSubmitted');
         }
-
-        function closePopup() {
-            // Hide the pop-up
-            const popupContainer = document.querySelector('.popup-container');
-            popupContainer.style.display = 'none';
-        }
-    </script>
+    });
+    
+    function showThankYouMessage() {
+        // Show the pop-up
+        const popupContainer = document.querySelector('.popup-container');
+        popupContainer.style.display = 'block';
+    }
+    
+    function closePopup() {
+        // Hide the pop-up
+        const popupContainer = document.querySelector('.popup-container');
+        popupContainer.style.display = 'none';
+    }
+    
+    function onSubmitForm() {
+        // Set the flag indicating that the form has been submitted
+        sessionStorage.setItem('formSubmitted', 'true');
+    }
+</script>
     <footer>
         <a href = 'https://github.com/maxbshaw17/MorningBread' target = '_blank'>
             <img src = 'https://cdn-icons-png.flaticon.com/512/25/25231.png'
