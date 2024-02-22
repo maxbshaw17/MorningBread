@@ -2,6 +2,7 @@ body {
   background: #1E1E23;
   margin: 0;
   font-family: 'Franklin Gothic Medium', sans-serif;
+  text-align: center; /* Center align the content within the body */
 }
 
 .navigation {
@@ -15,11 +16,64 @@ body {
   z-index: 999;
   display: flex;
   justify-content: space-between;
-  align-items: right;
+  margin: 0;
 }
 
 .navigation > li {
-  float: right;
+  display: inline-block;
+}
+
+#currentDate {
+  display: inline-block;
+  text-align: center; /* Center align the date */
+  background-color: #37778d;
+  opacity: 0.80;
+  padding: 8px 8px 6px 10px;
+  border-radius: 10px;
+  border: 2px solid rgba(0, 0, 0, 0.5);
+}
+
+#profile {
+  margin-left: auto; /* Move the profile link to the right */
+}
+
+h1 {
+  text-align: center;
+  font-family: 'Franklin Gothic Medium', sans-serif;
+}
+
+h1 > a {
+  color: #efefef;
+  text-decoration: none;
+}
+
+ul {
+  padding: 0;
+  margin: 0;
+  text-align: center;
+}
+
+li {
+  color: #efefef;
+  display: inline-block;
+  font-family: 'Oxygen', sans-serif;
+  font-size: 16px;
+  font-weight: 300;
+  letter-spacing: 2px;
+  padding: 8px 8px 6px 10px;
+  text-transform: uppercase;
+}
+
+li a {
+  text-decoration: none;
+  color: #FFF;
+}
+
+#profile:hover {
+  background-color: #37778d;
+  opacity: 0.80;
+  padding: 8px 8px 6px 10px;
+  border-radius: 10px;
 }
 
 /* CSS for profile.html */
@@ -101,7 +155,7 @@ header {
 
 .form {
   margin: 0 auto;
-  padding-bottom: 12px;
+  padding-bottom: 2vh;
   display: grid;
   gap: 12px;
 }
@@ -300,7 +354,7 @@ header {
 /* Search bar */ 
 
 .topnav .search-container {
-  position: relative;
+  position: fixed;
   float: right;
   width: 40vh;
   height: 5vh;
@@ -309,6 +363,7 @@ header {
 
 .topnav input[type="text"] {
   font-size: 14px;
+  background-color: #f0f0f0;
   border-radius: 14px;
   float: left; 
   display: block;
@@ -322,7 +377,6 @@ header {
 .topnav .search-container button {
   position: absolute;
   right: 0; 
-  top: 0;
   float: none;
   height: 100%;
   width: 20%;
@@ -347,45 +401,6 @@ header {
 }
 
 /* End of search bar */
-
-h1 {
-  text-align: center;
-  font-family: 'Franklin Gothic Medium', sans-serif;
-}
-
-h1 > a {
-  color: #efefef;
-  text-decoration: none;
-}
-
-ul {
-  padding: 0;
-  margin: 0;
-  text-align: center;
-}
-
-li {
-  color: #efefef;
-  display: inline-block;
-  font-family: 'Oxygen', sans-serif;
-  font-size: 16px;
-  font-weight: 300;
-  letter-spacing: 2px;
-  padding: 8px 8px 6px 10px;
-  text-transform: uppercase;
-}
-
-li a {
-  text-decoration: none;
-  color: #FFF;
-}
-
-li:hover {
-  background-color: #37778d;
-  opacity: 0.80;
-  padding: 8px 8px 6px 10px;
-  border-radius: 10px;
-}
 
 footer {
   background-color: #2A2A30;
