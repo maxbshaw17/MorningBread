@@ -67,15 +67,27 @@ url = "https://finance.yahoo.com/topic/latest-news"
 #create page object and print connection response
 session = HTMLSession()
 response = session.get(url, headers = headers)
-print(response.status_code)
-response.html.render(scrolldown = 1000, sleep = 1)
-print("rendered")
 
+#render javascript and scroll to load more articles
+response.html.render(scrolldown = 1000)
+
+#create soup object and list of html elements with data we want
 soup = BeautifulSoup(response.html.html, 'html5lib')
-for i in (soup.find_all('h3', {'class' : 'Mb(5px)'})):
-    print(i.text)
-"""
-for div in (soup.find_all('h3', {'class' : 'js-stream-content Pos(r)'})):
-    print("Found")
-"""
-print("done")
+articles = soup.find_all('div', {'class' : 'Cf'})
+
+#loop through articles to get data and append article object
+for article in articles:
+    #headline and link
+    text = article.find('a').get_text()
+    #link may be definite or relative
+    link = article.find('a').get('href')
+    if link[0] == '/':
+        link = "https://finance.yahoo.com" + "link"
+    
+    #date/time - given in "x minutes/hours ago" format
+    time = 
+    
+    article_list.append(Article(text, link))
+
+for article in article_list:
+    print(str(article)+"\n")
