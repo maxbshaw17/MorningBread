@@ -1,7 +1,7 @@
 #imports
-from news_scraper import scrape_finviz
+from news_scraper import *
 
 
-articles = scrape_finviz()
+articles = scrape_yahoo()
 for article in articles:
     print(article)
