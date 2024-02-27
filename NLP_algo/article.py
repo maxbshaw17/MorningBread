@@ -1,13 +1,14 @@
 import datetime
 
 class Article:
-    def __init__(self, headline, link, date = datetime.datetime(1970, 1, 1)):
+    def __init__(self, headline, link, date = datetime.datetime(1970, 1, 1), source = ""):
         self.headline = headline
         self.link = link
         self.date = date
+        self.source = source
     
     def __str__(self):
-        return f"{self.headline}, {self.date}, {self.link}"
+        return f"{self.headline}, {self.date}, {self.link}, {self.source}"
     
     #getters and setters
     def getHeadline(self):
@@ -16,6 +17,8 @@ class Article:
         return self.link
     def getDate(self):
         return self.date
+    def getSource(self):
+        return self.source
     
     def setHeadline(self, headline):
         self.headline = headline
@@ -23,3 +26,5 @@ class Article:
         self.link = link
     def setDate(self, date):
         self.date = date
+    def setSource(self, source):
+        self.source = source

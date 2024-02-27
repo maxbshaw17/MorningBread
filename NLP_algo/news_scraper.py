@@ -24,18 +24,21 @@ def scrape_finviz():
     response = session.get(url)
 
     #create list of html elemnts housing article data, filters out advertisements
-    articles = response.html.xpath("//tr[@class='styled-row is-hoverable is-bordered is-rounded is-border-top is-hover-borders has-color-text news_table-row'][@onclick]")
+    soup = BeautifulSoup(response.text, 'lxml')
+    article_table = soup.find('table', {'class' : "styled-table-new is-rounded table-fixed"})
+    articles = article_table.find_all('tr', {'class' : 'styled-row is-hoverable is-bordered is-rounded is-border-top is-hover-borders has-color-text news_table-row', 'onclick' : True})
+    #articles = response.html.xpath("//tr[@class='styled-row is-hoverable is-bordered is-rounded is-border-top is-hover-borders has-color-text news_table-row'][@onclick]")
 
     #loop through article objects and add to master list
     for article in articles:
-        soup = BeautifulSoup(article.html, "html.parser")
+        #soup = BeautifulSoup(article.html, "html.parser")
         
         #retrieve headline and link from soup object
-        text = soup.find("td", class_= "news_link-cell").get_text()
-        link = soup.find("a", class_= "tab-link").get('href')
+        text = article.find("td", class_= "news_link-cell").get_text()
+        link = article.find("a", class_= "tab-link").get('href')
         
         #retrieve date/time - accounts for time and date display
-        date_text = soup.find("td", class_= "text-right news_date-cell color-text is-muted").get_text()
+        date_text = article.find("td", class_= "text-right news_date-cell color-text is-muted").get_text()
         
         #empty datetime object to return later
         datetime_date = datetime.date(1970, 1, 1)
@@ -58,7 +61,7 @@ def scrape_finviz():
             datetime_date = datetime.datetime.strptime(f"{str(date.today().year)}-{date_text} {str(time(12, 0, 0))}", "%Y-%b-%d %H:%M:%S")
 
         #creates article object and adds to master list
-        article_list.append(Article(text, link, datetime_date))
+        article_list.append(Article(text, link, datetime_date, "finviz"))
     return article_list
 
 def scrape_yahoo(scrolldown = 2000):
@@ -99,9 +102,53 @@ def scrape_yahoo(scrolldown = 2000):
             elif "minute" in time_text:
                 datetime_date = datetime.datetime.now() - datetime.timedelta(minutes = int(minutes_or_hours))
             
-            article_list.append(Article(text, link, datetime_date))
+            article_list.append(Article(text, link, datetime_date, "yahoo finance"))
         except:
             pass
 
     return article_list
 
+def scrape_marketwatch_rss():
+    #links to rss feeds
+    links = [
+        "https://feeds.content.dowjones.io/public/rss/mw_topstories",
+        "https://feeds.content.dowjones.io/public/rss/mw_realtimeheadlines",
+        "https://feeds.content.dowjones.io/public/rss/mw_bulletins",
+        "https://feeds.content.dowjones.io/public/rss/mw_marketpulse"
+    ]
+    
+    article_list = []
+    
+    #iterate through links, have the same format
+    for link in links:
+        
+        page = requests.get(link)
+        soup = BeautifulSoup(page.text, 'lxml')
+        
+        articles = soup.find_all('item')
+        
+        for article in articles:
+            article_headline = article.find('title').get_text()
+            article_link = article.find('link').get_text()
+            
+            try:
+                date_text = article.find('pubDate').get_text()
+            except:
+                date_text = article.find('pubdate').get_text()
+            article_date = datetime.datetime.strptime(date_text, "%a, %d %b %Y %H:%M:%S GMT") + timedelta(hours = 7)
+            
+            article_list.append(Article(article_headline, article_link, article_date, "marketwatch rss"))
+            
+    return(article_list)
+
+#method to run all individual methods
+def scrape_all(yahoo_scrolldown = 2000):
+    article_list = []
+    for article in scrape_finviz():
+        article_list.append(article)
+    for article in scrape_yahoo(yahoo_scrolldown):
+        article_list.append(article)
+    for article in scrape_marketwatch_rss():
+        article_list.append(article)
+    
+    return article_list
