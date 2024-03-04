@@ -45,17 +45,11 @@ def scrape_finviz():
         
         #checks if string is date or time and updates datetime object accordingly
         if(date_text[0].isnumeric()):
-            #checks if time is AM or PM and converts to 24 hour scale
-            if(date_text[-2:] == 'PM'):
-                date_text = f"{(int(date_text[:2])) + 12}:{date_text[3:5]}"
-            else:
-                date_text = f"{date_text[:5]}"
-            
             #string conating todays date to parse
             today_string = str(date.today())
             
             #updates datetime object using strings from earlier
-            datetime_date = datetime.datetime.strptime(f"{today_string} {date_text}", "%Y-%m-%d %H:%M")
+            datetime_date = datetime.datetime.strptime(f"{today_string} {date_text}", "%Y-%m-%d %I:%M%p")
         #case where date_text is a month and day
         else:
             datetime_date = datetime.datetime.strptime(f"{str(date.today().year)}-{date_text} {str(time(12, 0, 0))}", "%Y-%b-%d %H:%M:%S")
