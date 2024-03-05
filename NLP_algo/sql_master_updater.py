@@ -10,7 +10,7 @@ articles_db = mysql.connector.connect(
 
 mycursor = articles_db.cursor()
 
-mycursor.execute("SHOW COLUMNS FROM articles")
+mycursor.execute("SELECT headline, source FROM articles")
 
 for x in mycursor:
   print(x)
