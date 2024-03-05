@@ -185,6 +185,109 @@ header {
   background-color: #37778d;
 }
 
+.card_signup {
+  overflow: hidden;
+  position: relative;
+  z-index: 3;
+  width: 25%; 
+  align-items: center;
+  margin: 0 auto;
+  padding: 170px 30px;
+  padding-bottom: 10vh;
+  border-radius: 24px;
+  text-align: center;
+  box-shadow: 0 100px 100px
+  rgba(255, 255, 255, 0.1);
+  background-color: #ffffff
+}
+
+.card_signup::before {
+  content: "";
+  position: absolute;
+  top: -880px;
+  left: 50%;
+  translate: -50% 0;
+  width: 1000px;
+  height: 1000px;
+  border-radius: 50%;
+  background-color: #37778d;
+}
+
+.card_signup .logo {
+  position: absolute; 
+  top: 25px;
+  left: 50%;
+  translate: -50% 0;
+  width: 84px;
+  height: 84px;
+}
+
+
+.card_signup > h2 {
+  font-size: 22px;
+  font-weight: 400;
+  margin: 0 0 3vh;
+  color: rgb(0 0 0 / 48%)
+}
+
+.card_signup .form input[type="firstname"],
+.card_signup .form input[type="lastname"] {
+  width: calc(50% - 5px); /* 50% width for each input with a small gap in between */
+  box-sizing: border-box; /* Include padding in the total width */
+}
+
+.card_signup .form input[type="email"],
+.card_signup .form input[type="password"] {
+  width: 100%; /* Full width for email and password inputs */
+  box-sizing: border-box; /* Include padding in the total width */
+}
+
+.card_signup .signup_footer {
+  color: #a1a1a1;
+}
+
+.card_signup .signup_footer > a {
+  color: #086788;
+}
+
+
+.form_signup {
+  margin: 0 auto;
+  padding-bottom: 2vh;
+  display: grid;
+  gap: 12px;
+}
+
+.form_signup
+:is(input, button) {
+  height: 56px;
+  border-radius: 28px;
+  font-size: 16px;
+  font-family: inherit;
+}
+
+.form_signup > input {
+  border: 0;
+  padding: 0 24px;
+  color: #222222;
+  background-color: #ededed;
+}
+
+.form_signup > input::placeholder {
+  color: rgb(0 0 0 / 28%)
+}
+
+.form_signup > button {
+  border: 0;
+  color: #f9f9f9;
+  background-color: #37778d;
+  display: grid;
+  place-items: center;
+  font-weight: 500;
+  cursor: pointer;
+  width: 100%;
+}
+
 .background::after {
   content: "";
   position: inherit;

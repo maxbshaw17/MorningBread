@@ -4,6 +4,10 @@
         <title>MorningBread | Contact</title>
         <link rel="icon" href="placeholder_image.png">
         <link href="style.css" type="text/css" rel="stylesheet">
+        <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+        <script>
+            emailjs.init("g0DUuIImNTUn6r7A6");
+        </script>        
     </head>
     <body>
     <h1><a href = 'main.html' class = 'active'>MorningBread</a></h1>
@@ -64,23 +68,55 @@
             sessionStorage.removeItem('formSubmitted');
         }
     });
-    
+        // Use a separate configuration file or environment variables
+        const emailjsConfig = {
+            userId: "g0DUuIImNTUn6r7A6",
+            serviceId: "service_7tchd16",
+            templateId: "template_opam4d4",
+    };
+        emailjs.init(emailjsConfig.userId);
+
+    function onSubmitForm() {
+        const firstName = document.querySelector('input[name="first_name"]').value;
+        const lastName = document.querySelector('input[name="last_name"]').value || 'N/A';
+        const email = document.querySelector('input[name="email"]').value;
+        const message = document.querySelector('textarea[name="message"]').value;
+
+        // Prepare the template parameters
+        const templateParams = {
+        from_name: `${firstName} ${lastName}`,
+        to_email: email,
+        message: message,
+        };
+
+        // Send the email using Email.js
+        emailjs.send("service_7tchd16", "template_opam4d4", templateParams)
+        .then(function(response) {
+            console.log("Email sent successfully:", response);
+            showThankYouMessage();
+        })
+        .catch(function(error) {
+            console.error("Error sending email:", error);
+        });
+
+        // Set the flag indicating that the form has been submitted
+        sessionStorage.setItem('formSubmitted', 'true');
+  }
+
     function showThankYouMessage() {
         // Show the pop-up
         const popupContainer = document.querySelector('.popup-container');
         popupContainer.style.display = 'block';
+
+        // Reset the form
+        document.querySelector('.contact_form').reset();
     }
-    
+
     function closePopup() {
         // Hide the pop-up
         const popupContainer = document.querySelector('.popup-container');
         popupContainer.style.display = 'none';
-    }
-    
-    function onSubmitForm() {
-        // Set the flag indicating that the form has been submitted
-        sessionStorage.setItem('formSubmitted', 'true');
-    }
+  }
 </script>
     <footer>
         <a href = 'https://github.com/maxbshaw17/MorningBread' target = '_blank'>
