@@ -6,7 +6,7 @@ body {
 
 .navigation {
   box-sizing: border-box;
-  background-color: #6C97A6;
+  background-color: #BFCDE0;
   overflow: auto;
   padding: 18px 50px;
   position: relative;
@@ -30,7 +30,7 @@ body {
 }
 
 #currentDate {
-  background-color: #37778d;
+  background-color: #A5B5D2;
   opacity: 0.80;
   padding: 8px 8px 6px 10px;
   border-radius: 10px;
@@ -74,7 +74,7 @@ li a {
 }
 
 #profile:hover {
-  background-color: #37778d;
+  background-color: #8B9DC4;
   opacity: 0.80;
   padding: 8px 8px 6px 10px;
 }
@@ -109,14 +109,14 @@ li a {
   height: 112%;
   width: 20%;
   border-radius: 14px;
-  background: #086788;
+  background: #A5B5D2;
   font-size: 14px;
   border: none;
   cursor: pointer;
 }
 
 .topnav .search-container button:hover {
-  background: #37778d;
+  background: #8B9DC4;
 }
 
 .topnav input[type=text] {
@@ -130,7 +130,7 @@ li a {
 
 /* End of search bar */
 
-/* CSS for profile.html */
+/* CSS for profile.html and signup.html */
 
 header {
   text-align: center;
@@ -139,7 +139,7 @@ header {
 
 .navigation_profile {
   box-sizing: border-box;
-  background-color: #6C97A6;
+  background-color: #BFCDE0;
   overflow: auto;
   padding: 18px 50px;
   position: relative;
@@ -182,7 +182,7 @@ header {
   width: 1000px;
   height: 1000px;
   border-radius: 50%;
-  background-color: #37778d;
+  background-color: #A5B5D2;
 }
 
 .card_signup {
@@ -210,7 +210,7 @@ header {
   width: 1000px;
   height: 1000px;
   border-radius: 50%;
-  background-color: #37778d;
+  background-color: #A5B5D2;
 }
 
 .card_signup .logo {
@@ -230,16 +230,35 @@ header {
   color: rgb(0 0 0 / 48%)
 }
 
-.card_signup .form input[type="firstname"],
-.card_signup .form input[type="lastname"] {
-  width: calc(50% - 5px); /* 50% width for each input with a small gap in between */
-  box-sizing: border-box; /* Include padding in the total width */
+.name-fields {
+  display: flex;
+  gap: 10px;
 }
 
-.card_signup .form input[type="email"],
-.card_signup .form input[type="password"] {
-  width: 100%; /* Full width for email and password inputs */
-  box-sizing: border-box; /* Include padding in the total width */
+.input-container {
+  flex: 1;
+  position: relative;
+}
+
+.card_signup .form_signup input[type="text"] {
+  padding-left: 24px;;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: #ededed;
+  border-width: 0px;
+  /* Add any other desired styles for input fields */
+}
+
+.card_signup .form_signup input[type="text"]::placeholder {
+  color: rgb(0 0 0 / 28%)
+
+}
+
+.card_signup .form_signup label {
+  display: block;
+  text-align: left;
+  margin-bottom: 5px;
+  color: rgba(0, 0, 0, 0.6);
 }
 
 .card_signup .signup_footer {
@@ -247,9 +266,8 @@ header {
 }
 
 .card_signup .signup_footer > a {
-  color: #086788;
+  color: #FFB061;
 }
-
 
 .form_signup {
   margin: 0 auto;
@@ -280,7 +298,7 @@ header {
 .form_signup > button {
   border: 0;
   color: #f9f9f9;
-  background-color: #37778d;
+  background-color: #A5B5D2;
   display: grid;
   place-items: center;
   font-weight: 500;
@@ -344,7 +362,7 @@ header {
 .form > button {
   border: 0;
   color: #f9f9f9;
-  background-color: #37778d;
+  background-color: #A5B5D2;
   display: grid;
   place-items: center;
   font-weight: 500;
@@ -357,7 +375,7 @@ header {
 }
 
 .card > .profile_footer > a {
-  color: #086788;
+  color: #FFB061;
 }
 
 /* End of profile.html */
@@ -366,7 +384,7 @@ header {
 
 .navigation_contact {
   box-sizing: border-box;
-  background-color: #6C97A6;
+  background-color: #BFCDE0;
   overflow: auto;
   padding: 18px 50px;
   position: relative;
@@ -414,7 +432,7 @@ header {
   width: 1000px;
   height: 1000px;
   border-radius: 50%;
-  background-color: #37778d;
+  background-color: #A5B5D2;
 }
 
 .contact_form > input {
@@ -447,7 +465,7 @@ header {
 .contact_form > button {
   border: 0;
   color: #FFF;
-  background-color: #37778d;
+  background-color: #A5B5D2;
   border-radius: 12px;
   cursor: pointer;
   padding: 12px 20px;
@@ -503,7 +521,7 @@ header {
   border: 0;
   border-radius: 10px;
   color: #efefef;
-  background-color: #37778d;
+  background-color: #BFCDE0;
   display: grid;
   place-items: center;
   font-size: 15px;

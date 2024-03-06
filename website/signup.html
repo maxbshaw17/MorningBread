@@ -23,12 +23,14 @@
         <img class = 'logo' src = 'placeholder_image.png' />
         <h2>Create an Account</h2>
         <form class = 'form_signup'>
-            <input
-                type = "firstname"
-                placeholder = "First Name" />
-            <input
-                type = "lastname"
-                placeholder="Last Name" />
+            <div class="name-fields">
+                <div class="input-container">
+                  <input type="text" id="firstName" name="firstName" placeholder="First Name" required>
+                </div>
+                <div class="input-container">
+                  <input type="text" id="lastName" name="lastName" placeholder="Last Name" required>
+                </div>
+              </div>
             <input 
                 type = "email"
                 placeholder = "Email" />

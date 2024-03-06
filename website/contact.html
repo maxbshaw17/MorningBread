@@ -85,7 +85,7 @@
         // Prepare the template parameters
         const templateParams = {
         from_name: `${firstName} ${lastName}`,
-        to_email: email,
+        email: email,
         message: message,
         };
 
@@ -100,7 +100,6 @@
         });
 
         // Set the flag indicating that the form has been submitted
-        sessionStorage.setItem('formSubmitted', 'true');
   }
 
     function showThankYouMessage() {
