@@ -6,7 +6,7 @@ import datetime
 from datetime import date
 from datetime import time
 from datetime import timedelta
-from article import Article
+from web_scrape.article import Article
 
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
