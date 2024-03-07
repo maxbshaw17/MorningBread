@@ -158,6 +158,3 @@ def scrape_all(yahoo_scrolldown=1000):
         article_list.append(article)
 
     return article_list
-
-for x in scrape_yahoo(500):
-    print(x)

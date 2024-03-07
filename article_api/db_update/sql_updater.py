@@ -1,5 +1,5 @@
 #imports
-from news_scraper import *
+from web_scrape.news_scraper import *
 import mysql.connector
 
 #create database connection object
