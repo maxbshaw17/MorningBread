@@ -1,1 +1,3 @@
 article_api/__pycache__
+article_api/db_update/__pycache__
+article_api/web_scrape/__pycache__

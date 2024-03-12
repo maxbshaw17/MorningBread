@@ -14,6 +14,14 @@ def get_all_headlines():
     headlines = []
     mycursor.execute("SELECT headline FROM articles")
     for x in mycursor:
-        headlines.append(x)
+        headlines.append(x[0])
     
     return headlines
+
+def execute_sql(command_string):
+    return_data = []
+    mycursor.execute(command_string)
+    for line in mycursor:
+        return_data.append(line)
+    
+    return return_data
