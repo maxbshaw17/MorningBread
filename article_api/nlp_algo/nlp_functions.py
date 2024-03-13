@@ -1,15 +1,10 @@
 
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.cluster import DBSCAN
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.decomposition import TruncatedSVD
 from sklearn.neighbors import NearestNeighbors
 import pandas as pd
 import numpy as np
-import seaborn as sns
 import matplotlib.pyplot as plt
-import nltk
-import re
 import string
 from nltk.tokenize import word_tokenize, sent_tokenize
 from nltk.corpus import stopwords
@@ -65,11 +60,6 @@ def clean_text_list(text_list):
     text_list = remove_repeats(text_list)
     return list(map(lambda text: clean_text(text), text_list))
 
-
-cv = CountVectorizer()
-x = cv.fit_transform(text_cleaned)
-bag_of_words = x.toarray()
-
 def knn_plot(text_array):
     neigh = NearestNeighbors(n_neighbors=2)
     nbrs = neigh.fit(text_array)
@@ -84,12 +74,19 @@ def knn_plot(text_array):
     plt.ylabel('Epsilon',fontsize=12)
     plt.show()
 
+def text_vectorizer(text_list):
+    text = remove_repeats(text_list)
+    text_cleaned = clean_text_list(text_list)
+    
+    cv = CountVectorizer()
+    x = cv.fit_transform(text_cleaned)
+    return x.toarray(), text
 
-dbscan_opt=DBSCAN(eps=2.5,min_samples=2)
-dbscan_opt.fit(x)
-df_data = {"group": dbscan_opt.labels_, "sentance" : headlines}
-df = pd.DataFrame(data=df_data)
+def fit_dbscan_text(text_array, text, ep=1, min_s=2):
+    dbscan_opt=DBSCAN(eps = ep,min_samples = min_s)
+    dbscan_opt.fit(text_array)
+    df_data = {"group": dbscan_opt.labels_, "sentance" : text}
+    df = pd.DataFrame(data=df_data)
+    
+    return df
 
-print(df['DBSCAN_opt_labels'].value_counts())
-
-print(df.sort_values(by='DBSCAN_opt_labels', ascending=False).head(50))

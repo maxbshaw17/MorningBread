@@ -3,5 +3,12 @@ from nlp_algo.nlp_functions import *
 
 headlines = get_all_headlines()
 
-for x in clean_text_list(headlines):
-    print(x)
+array, sents = text_vectorizer(headlines)
+
+
+#print(knn_plot(array))
+
+
+fit_df = fit_dbscan_text(array, sents, ep = 2.5, min_s=2)
+
+print(fit_df.sort_values(by='group', ascending=False).head(50))
