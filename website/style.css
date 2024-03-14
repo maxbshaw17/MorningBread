@@ -79,18 +79,52 @@ li a {
   padding: 8px 8px 6px 10px;
 }
 
+/* Articles */
+
+
+.article-section {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.featured-article,
+.secondary-articles {
+  flex: 0 0 50%;
+  color: #c6c6c6;
+  padding-left: 60px;
+  padding-top: 40px;
+  background-color: #1E1E23;
+  box-sizing: border-box;
+}
+
+.article-preview {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.article-preview img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
 /* Tickers */
 
 .ticker-container {
   position: fixed;
-  color: #2A2A30;
+  color: #2a2a30;
   right: 0;
   width: 30vh;
   height: 100vh;
   background-color: #c6c6c6;
   border-left: 6px solid #ddd;
+  border-right: 6px solid #ddd;
   display: flex;
-  align-items: center;
+  flex-direction: column; 
+  justify-content: flex-start; 
+  align-items: center; 
   overflow: hidden;
 }
 
@@ -98,6 +132,16 @@ li a {
   flex: 1;
   width: 100%;
   overflow: hidden;
+}
+
+.time-display {
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
+  width: 100%;
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: auto;
 }
 
 .ticker {

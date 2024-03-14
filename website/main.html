@@ -7,51 +7,82 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     </head>
     <body>
-    <h1><a href = 'main.html' class = 'active'>MorningBread</a></h1>
-    <ul class="navigation">
-        <div class="topnav">
-            <div class="search-container">
-                <input type="text" placeholder="Search for news..." name="search">
-                <button type="submit"><i class="fa fa-search"></i></button>
+        <h1><a href='main.html' class='active'>MorningBread</a></h1>
+        <ul class="navigation">
+            <div class="topnav">
+                <div class="search-container">
+                    <input type="text" placeholder="Search for news..." name="search">
+                    <button type="submit"><i class="fa fa-search"></i></button>
+                </div>
             </div>
-          </div>
-          <div class = 'date-container'>
-          <li><a id='currentDate'>Date</a></li>
+            <div class='date-container'>
+                <li><a id='currentDate'>Date</a></li>
+            </div>
+            <li><a href='profile.html' id='profile'>Profile</a></li>
+        </ul>
+        <div class="ticker-container">
+            <div class="time-display">
+                <li><a id='currentTime'>Time</a></li>
+            </div>
+            <div class="ticker-wrapper">
+                <div class="ticker">
+                    <div class="ticker-item">
+                        <span class="symbol">DLTR</span>
+                        <span class="name">Dollar Tree, Inc.</span>
+                        <span class="price">128.23</span>
+                        <span class="change negative">-21.46</span>
+                        <span class="change-percent negative">-14.34%</span>
+                    </div>
+                    <br>
+                    <div class="ticker-item">
+                        <span class="symbol">SQ</span>
+                        <span class="name">Block, Inc.</span>
+                        <span class="price">85.94</span>
+                        <span class="change positive">+4.23</span>
+                        <span class="change-percent positive">+5.18%</span>
+                    </div>
+                </div>
+            </div>
         </div>
-          <li><a href= 'profile.html' id='profile'>Profile</a></li>
-      <script>
-          var currentDateElement = document.getElementById('currentDate');
-          var currentDate = new Date();
-          var options = { year: 'numeric', month: 'long', day: 'numeric' };
-          currentDateElement.innerText = currentDate.toLocaleDateString(undefined, options);
-      </script>
-      </ul>
-      <div class ="ticker-container">
-      <div class="ticker-wrapper">
-        <div class="ticker">
-            <div class="ticker-item">
-                <span class="symbol">DLTR</span>
-                <span class="name">Dollar Tree, Inc.</span>
-                <span class="price">128.23</span>
-                <span class="change negative">-21.46</span>
-                <span class="change-percent negative">-14.34%</span>
-              </div>
-              <br>
-              <div class="ticker-item">
-                <span class="symbol">SQ</span>
-                <span class="name">Block, Inc.</span>
-                <span class="price">85.94</span>
-                <span class="change positive">+4.23</span>
-                <span class="change-percent positive">+5.18%</span>
-              </div>
+        <div class="article-section">
+            <div class="featured-article">
+                <h2>Featured Article</h2>
+                <img src="featured-article-image.jpg" alt="Featured Article Image">
+                <h3>Article Headline</h3>
+                <p>Article summary...</p>
+                <a href="#">Read More</a>
+            </div>
+            <div class="secondary-articles">
+                <h2>Other Top Stories</h2>
+                <img src="article-thumbnail.jpg" alt="Article Thumbnail">
+                <h4>Article Headline</h4>
+                <p>Article summary...</p>
+                <a href="#">Read More</a>
+            </div>
         </div>
-      </div>
-      </div>
+        <footer>
+            <a href='https://github.com/maxbshaw17/MorningBread' target='_blank'>
+                <img src='https://cdn-icons-png.flaticon.com/512/25/25231.png' height="36">
+            </a>
+            <h3><a href='contact.html' class='active'>Contact Us</a></h3>
+        </footer>
+        <script>
+            // Function to update the current time
+            function updateTime() {
+                var currentTimeElement = document.getElementById('currentTime');
+                var currentTime = new Date();
+                var options = { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true };
+                currentTimeElement.innerText = currentTime.toLocaleTimeString(undefined, options);
+            }
+
+            // Call updateTime function every second to update the time
+            setInterval(updateTime, 1000);
+
+            // Update the current date
+            var currentDateElement = document.getElementById('currentDate');
+            var currentDate = new Date();
+            var options = { year: 'numeric', month: 'long', day: 'numeric' };
+            currentDateElement.innerText = currentDate.toLocaleDateString(undefined, options);
+        </script>
     </body>
-    <footer>
-        <a href = 'https://github.com/maxbshaw17/MorningBread' target = '_blank'>
-            <img src = 'https://cdn-icons-png.flaticon.com/512/25/25231.png'
-            height = "36"></a>
-            <h3><a href = 'contact.html' class = 'active'>Contact Us</a></h3>
-    </footer>
 </html>
