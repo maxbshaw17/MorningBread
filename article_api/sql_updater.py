@@ -13,18 +13,19 @@ articles_db = mysql.connector.connect(
 
 mycursor = articles_db.cursor()
 
-insert_sql = "INSERT INTO articles (headline, link, date, source) VALUES (%s, %s, %s, %s)"
+def update_articles_db():
+    insert_sql = "INSERT INTO articles (headline, link, date, source) VALUES (%s, %s, %s, %s)"
 
-articles = scrape_all()
-values = []
+    articles = scrape_all()
+    values = []
 
-for article in articles:
-    values.append((article.headline, article.link, article.date, article.source))
+    for article in articles:
+        values.append((article.headline, article.link, article.date, article.source))
 
-try:
-    mycursor.executemany(insert_sql, values)
-    articles_db.commit()
-except:
-    articles_db.rollback()
-finally:
-    print(mycursor.rowcount, " rows inserted")
+    try:
+        mycursor.executemany(insert_sql, values)
+        articles_db.commit()
+    except:
+        articles_db.rollback()
+    finally:
+        return mycursor.rowcount
