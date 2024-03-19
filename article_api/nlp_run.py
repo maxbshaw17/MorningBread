@@ -11,4 +11,8 @@ array, sents = text_vectorizer(headlines)
 
 fit_df = fit_dbscan_text(array, sents, ep = 2.5, min_s=2)
 
-print(fit_df.sort_values(by='group', ascending=False).head(50))
+print(fit_df.sort_values(by='group', ascending=False).head(80).to_string())
+
+#for i in fit_df.sort_values(by='group', ascending=False).index:
+#    if fit_df['group'][i] != -1:
+#        print(f"{fit_df['group'][i]}, {fit_df['sentence'][i]}")
