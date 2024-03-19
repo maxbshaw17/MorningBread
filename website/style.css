@@ -81,10 +81,10 @@ li a {
 
 /* Articles */
 
-
 .article-section {
   display: flex;
   flex-wrap: wrap;
+  background-color: #1E1E23;
 }
 
 .featured-article,
@@ -108,6 +108,14 @@ li a {
   height: 80px;
   object-fit: cover;
   margin-right: 10px;
+}
+
+.read-more-link {
+  color: #FFB061;
+}
+
+.read-more-link:hover {
+  color: #fec78f;
 }
 
 /* Tickers */
