@@ -1,11 +1,18 @@
 from flask import Flask, jsonify
-import sqlite3
+import mysql.connector
 
 app = Flask(__name__)
 
-# Connect to the SQL database (Not yet created)
-conn = sqlite3.connect('tickers.db')
-c = conn.cursor()
+# Connect to the MySQL database (Not yet created)
+tickers_db = mysql.connector.connect(
+    host = "mysql-2ed0e70f-morningbread.a.aivencloud.com",
+    user = "avnadmin",
+    password = "AVNS_-1y1cgAxePfkqdPTpji",
+    port = 25747,
+    database = "morningbread"
+)
+
+c = tickers_db.cursor()
 
 @app.route('/articles_tickers_api/tickers_api', methods=['GET'])
 def get_tickers():
