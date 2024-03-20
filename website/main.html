@@ -46,18 +46,28 @@
         </div>
         <div class="article-section">
             <div class="featured-article">
-                <h2>Featured Article</h2>
-                <h2>Article Headline</h2>
-                <p>Article summary...</p>
-                <a href="#" class = "read-more-link">Read More</a>
+              <h1>Article Headline</h2>
+              <div class="article-preview">
+                <img src="placeholder_image.png" alt="Article Image">
+                <div>
+                  <p class="article-summary">Article summary...</p>
+                  <a href="#" class="article-link">Link...</p>
+                  <a class="read-more-link">Show Summary</a>
+                </div>
+              </div>
             </div>
             <div class="secondary-articles">
-                <h2>Other Top Stories</h2>
-                <h2>Article Headline</h2>
-                <p>Article summary...</p>
-                <a href="#" class = "read-more-link">Read More</a>
+              <h1>Article Headline</h2>
+              <div class="article-preview">
+                <img src="placeholder_image.png" alt="Article Image">
+                <div>
+                  <p class="article-summary">Article summary...</p>
+                  <a href="#" class="article-link">Link...</p>
+                  <a class="read-more-link">Show Summary</a>
+                </div>
+              </div>
             </div>
-        </div>
+          </div>
         <footer>
             <a href='https://github.com/maxbshaw17/MorningBread' target='_blank'>
                 <img src='https://cdn-icons-png.flaticon.com/512/25/25231.png' height="36">
@@ -81,6 +91,26 @@
             var currentDate = new Date();
             var options = { year: 'numeric', month: 'long', day: 'numeric' };
             currentDateElement.innerText = currentDate.toLocaleDateString(undefined, options);
+
+            // Get all "Read More" links
+            const readMoreLinks = document.querySelectorAll('.read-more-link');
+
+            // Add click event listener to each link
+            readMoreLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    // Get the article summary element
+                    const articleSummary = link.parentNode.querySelector('.article-summary');
+                    // Get the article link element
+                    const articleLink = link.parentNode.querySelector('.article-link');
+
+                    // Toggle the display of the article summary and link
+                    articleSummary.style.display = articleSummary.style.display === 'none' ? 'block' : 'none';
+                    articleLink.style.display = articleLink.style.display === 'none' ? 'inline' : 'none';
+
+                    // Update the link text
+                    link.textContent = articleSummary.style.display === 'none' ? 'Show Summary' : 'Hide Summary';
+                });
+            });
         </script>
     </body>
 </html>
