@@ -9,7 +9,7 @@ articles_db = mysql.connector.connect(
     user = "avnadmin",
     password = "AVNS_-1y1cgAxePfkqdPTpji",
     port = 25747,
-    database = "morningbread"
+    database = "morningbread",
 )
 
 c = articles_db.cursor()

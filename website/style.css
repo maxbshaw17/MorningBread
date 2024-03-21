@@ -98,8 +98,8 @@ li a {
   padding: 20px 60px;
   background-color: #1E1E23;
   box-sizing: border-box;
-  background-color: #282832; /* Set background color for boxes */
-  border-radius: 20px; /* Add rounded corners */
+  background-color: #282832; 
+  border-radius: 20px;
 }
 
 .featured-article > h1,
