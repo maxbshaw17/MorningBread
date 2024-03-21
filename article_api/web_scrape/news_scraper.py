@@ -75,14 +75,34 @@ def scrape_finviz():
 
 def scrape_yahoo():
     article_list = []
-    driver = webdriver.Chrome()
+    op = webdriver.ChromeOptions()
+    op.add_argument('headless')
+    op.add_argument('log-level=3')
+    driver = webdriver.Chrome(options=op)
     driver.get('https://finance.yahoo.com/topic/latest-news')
+    
+    time.sleep(10)
+    
+    SCROLL_PAUSE_TIME = 3
 
-    elemnts = driver.find_elements(By.XPATH, '//li[@class="js-stream-content Pos(r)"]')
-    article_html = []
-    for a in elemnts:
-        article_html.append(a.get_attribute('innerHTML'))
+    new_pages = 10
+
+    while new_pages > 0:
+        # Scroll down to bottom
+        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+
+        # Wait to load page
+        time.sleep(SCROLL_PAUSE_TIME)
         
+        new_pages-=1
+
+    elements_div = BeautifulSoup((driver.find_element(By.XPATH, '//div[@id="Fin-Stream"]').get_attribute('innerHTML')), "html.parser")
+    elements = list(filter(None, elements_div.find_all('li')))
+    
+    
+    for e in elements:
+        print(e.find('a').get_text())
+    
     return article_list
 
 def scrape_marketwatch_rss():
