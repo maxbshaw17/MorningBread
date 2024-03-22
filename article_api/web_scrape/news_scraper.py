@@ -7,21 +7,41 @@ from datetime import date
 from datetime import time
 from datetime import timedelta
 from article import Article
-
 import time
-
 # import webdriver
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-# import Action chains 
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.common.keys import Keys
 
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7'
 }
 
+# methods for cleaning data
+def text_to_datetime(date_string):
+    return_date = datetime.date(1970, 1, 1)
+    
+    # xx:xxXM format
+    if "M" in date_string and date_string[0].isnumeric():
+        today_string = str(date.today())
+        return_date = datetime.datetime.strptime(
+                f"{today_string} {date_string}", "%Y-%m-%d %I:%M%p")
+    # Mon-xx format
+    elif "-" in date_string:
+        return_date = datetime.datetime.strptime(
+                f"{str(date.today().year)}-{date_string} {str(time(12, 0, 0))}", "%Y-%b-%d %H:%M:%S")
+    # x minute(s) ago format
+    elif "minute" in date_string:
+        nums = int(''.join([char for char in date_string if char.isdigit()]))
+        
+        return_date = datetime.datetime.now() - timedelta(minutes = nums)
+    # x hour(s) ago format
+    elif "hour" in date_string:
+        nums = int(''.join([char for char in date_string if char.isdigit()]))
+        
+        return_date = datetime.datetime.now() - timedelta(hours = nums)
+    
+    return return_date
 
 # individual methods for each site
 def scrape_finviz():
@@ -44,33 +64,16 @@ def scrape_finviz():
 
     # loop through article objects and add to master list
     for article in articles:
-
         # retrieve headline and link from soup object
         text = article.find("td", class_="news_link-cell").get_text()
         link = article.find("a", class_="tab-link").get('href')
 
         # retrieve date/time - accounts for possibility time and date
-        date_text = article.find(
-            "td", class_="text-right news_date-cell color-text is-muted").get_text()
-
-        # empty datetime object to return later
-        datetime_date = datetime.date(1970, 1, 1)
-
-        # checks if string is date or time and updates datetime object accordingly
-        if (date_text[0].isnumeric()):
-            # string conating todays date to parse
-            today_string = str(date.today())
-
-            # updates datetime object using strings from earlier
-            datetime_date = datetime.datetime.strptime(
-                f"{today_string} {date_text}", "%Y-%m-%d %I:%M%p")
-            
-        else: # case where date_text is a month and day
-            datetime_date = datetime.datetime.strptime(
-                f"{str(date.today().year)}-{date_text} {str(time(12, 0, 0))}", "%Y-%b-%d %H:%M:%S")
-
+        datetime_date = text_to_datetime(article.find("td", class_="text-right news_date-cell color-text is-muted").get_text())
+        
         # creates article object and adds to master list
         article_list.append(Article(text, link, datetime_date, "finviz"))
+        
     return article_list
 
 def scrape_yahoo():
@@ -81,27 +84,35 @@ def scrape_yahoo():
     driver = webdriver.Chrome(options=op)
     driver.get('https://finance.yahoo.com/topic/latest-news')
     
-    time.sleep(10)
+    time.sleep(2)
     
-    SCROLL_PAUSE_TIME = 3
+    SCROLL_PAUSE_TIME = 4
+    old_height = int(driver.execute_script("return document.documentElement.scrollHeight"))
 
-    new_pages = 10
-
-    while new_pages > 0:
+    while True:
         # Scroll down to bottom
-        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-
+        driver.execute_script("window.scrollTo(0, document.documentElement.scrollHeight);")
+        current_height = int(driver.execute_script("return document.documentElement.scrollHeight"))
         # Wait to load page
         time.sleep(SCROLL_PAUSE_TIME)
         
-        new_pages-=1
+        if old_height == current_height:
+            break
+        else:
+            old_height = current_height
+        
+    time.sleep(2)
 
     elements_div = BeautifulSoup((driver.find_element(By.XPATH, '//div[@id="Fin-Stream"]').get_attribute('innerHTML')), "html.parser")
     elements = list(filter(None, elements_div.find_all('li')))
     
-    
     for e in elements:
-        print(e.find('a').get_text())
+        headline = e.find('a').get_text()
+        link = f"https://finance.yahoo.com{e.find('a').get('href')}"
+        publish_time = text_to_datetime(e.find_all('span')[1].get_text())
+        source = e.find_all('span')[0].get_text()
+        
+        article_list.append(Article(headline, link, publish_time, source))
     
     return article_list
 
@@ -133,7 +144,7 @@ def scrape_marketwatch_rss():
             except:
                 date_text = article.find('pubdate').get_text()
             article_date = datetime.datetime.strptime(
-                date_text, "%a, %d %b %Y %H:%M:%S GMT") + timedelta(hours=7)
+                date_text, "%a, %d %b %Y %H:%M:%S GMT") - timedelta(hours=4)
 
             article_list.append(
                 Article(article_headline, article_link, article_date, "marketwatch rss"))
@@ -141,15 +152,14 @@ def scrape_marketwatch_rss():
     return (article_list)
 
 # method to run all individual methods
-def scrape_all(yahoo_scrolldown=1000):
+def scrape_all():
     article_list = []
     for article in scrape_finviz():
         article_list.append(article)
-    for article in scrape_yahoo(yahoo_scrolldown):
+    for article in scrape_yahoo():
         article_list.append(article)
     for article in scrape_marketwatch_rss():
         article_list.append(article)
 
     return article_list
 
-scrape_yahoo()
