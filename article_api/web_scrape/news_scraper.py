@@ -6,8 +6,8 @@ import datetime
 from datetime import date
 from datetime import time
 from datetime import timedelta
-from article import Article
-import time
+from .article import Article
+import time as python_time
 # import webdriver
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -18,37 +18,41 @@ headers = {
 }
 
 # methods for cleaning data
+
+
 def text_to_datetime(date_string):
     return_date = datetime.date(1970, 1, 1)
-    
+
     # xx:xxXM format
     if "M" in date_string and date_string[0].isnumeric():
         today_string = str(date.today())
         return_date = datetime.datetime.strptime(
-                f"{today_string} {date_string}", "%Y-%m-%d %I:%M%p")
+            f"{today_string} {date_string}", "%Y-%m-%d %I:%M%p")
     # Mon-xx format
     elif "-" in date_string:
         return_date = datetime.datetime.strptime(
-                f"{str(date.today().year)}-{date_string} {str(time(12, 0, 0))}", "%Y-%b-%d %H:%M:%S")
+            f"{str(date.today().year)}-{date_string} {str(time(12, 0, 0))}", "%Y-%b-%d %H:%M:%S")
     # x minute(s) ago format
     elif "minute" in date_string:
         nums = int(''.join([char for char in date_string if char.isdigit()]))
-        
-        return_date = datetime.datetime.now() - timedelta(minutes = nums)
+
+        return_date = datetime.datetime.now() - timedelta(minutes=nums)
     # x hour(s) ago format
     elif "hour" in date_string:
         nums = int(''.join([char for char in date_string if char.isdigit()]))
-        
-        return_date = datetime.datetime.now() - timedelta(hours = nums)
-    
+
+        return_date = datetime.datetime.now() - timedelta(hours=nums)
+
     return return_date
 
 # individual methods for each site
+
+
 def scrape_finviz():
     # Initialize an empty list to store scraped articles
     article_list = []
-    
-    #the url to be connected to
+
+    # the url to be connected to
     url = "https://finviz.com/news.ashx"
 
     # create page object and print connection response
@@ -69,12 +73,14 @@ def scrape_finviz():
         link = article.find("a", class_="tab-link").get('href')
 
         # retrieve date/time - accounts for possibility time and date
-        datetime_date = text_to_datetime(article.find("td", class_="text-right news_date-cell color-text is-muted").get_text())
-        
+        datetime_date = text_to_datetime(article.find(
+            "td", class_="text-right news_date-cell color-text is-muted").get_text())
+
         # creates article object and adds to master list
         article_list.append(Article(text, link, datetime_date, "finviz"))
-        
+
     return article_list
+
 
 def scrape_yahoo():
     article_list = []
@@ -83,38 +89,43 @@ def scrape_yahoo():
     op.add_argument('log-level=3')
     driver = webdriver.Chrome(options=op)
     driver.get('https://finance.yahoo.com/topic/latest-news')
-    
-    time.sleep(2)
-    
+
+    python_time.sleep(2)
+
     SCROLL_PAUSE_TIME = 4
-    old_height = int(driver.execute_script("return document.documentElement.scrollHeight"))
+    old_height = int(driver.execute_script(
+        "return document.documentElement.scrollHeight"))
 
     while True:
         # Scroll down to bottom
-        driver.execute_script("window.scrollTo(0, document.documentElement.scrollHeight);")
-        current_height = int(driver.execute_script("return document.documentElement.scrollHeight"))
+        driver.execute_script(
+            "window.scrollTo(0, document.documentElement.scrollHeight);")
+        current_height = int(driver.execute_script(
+            "return document.documentElement.scrollHeight"))
         # Wait to load page
-        time.sleep(SCROLL_PAUSE_TIME)
-        
+        python_time.sleep(SCROLL_PAUSE_TIME)
+
         if old_height == current_height:
             break
         else:
             old_height = current_height
-        
-    time.sleep(2)
 
-    elements_div = BeautifulSoup((driver.find_element(By.XPATH, '//div[@id="Fin-Stream"]').get_attribute('innerHTML')), "html.parser")
+    python_time.sleep(2)
+
+    elements_div = BeautifulSoup((driver.find_element(
+        By.XPATH, '//div[@id="Fin-Stream"]').get_attribute('innerHTML')), "html.parser")
     elements = list(filter(None, elements_div.find_all('li')))
-    
+
     for e in elements:
         headline = e.find('a').get_text()
         link = f"https://finance.yahoo.com{e.find('a').get('href')}"
         publish_time = text_to_datetime(e.find_all('span')[1].get_text())
         source = e.find_all('span')[0].get_text()
-        
+
         article_list.append(Article(headline, link, publish_time, source))
-    
+
     return article_list
+
 
 def scrape_marketwatch_rss():
     # links to rss feeds
@@ -152,6 +163,8 @@ def scrape_marketwatch_rss():
     return (article_list)
 
 # method to run all individual methods
+
+
 def scrape_all():
     article_list = []
     for article in scrape_finviz():
@@ -162,4 +175,3 @@ def scrape_all():
         article_list.append(article)
 
     return article_list
-
