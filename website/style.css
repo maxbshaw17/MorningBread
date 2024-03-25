@@ -624,6 +624,11 @@ header {
   padding-left: 220px;
 }
 
+.contact a {
+  text-decoration: none;
+  color: #efefef;
+}
+
 /* End of contact.html */
 
 /* Pop-up after submitting the contact form */
@@ -693,4 +698,137 @@ footer > h3 {
 h3 a {
   text-decoration: none;
   color: #efefef;
+}
+
+/* about.html */
+
+.team_heading h1 {
+  color: #efefef;
+  padding-bottom: 24px;
+}
+
+.accordian_body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.accordian {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  height: 400px;
+  gap: 16px;
+  transition: 0.3s;
+}
+
+.accordian:hover {
+  gap: 0;
+}
+
+.accordian h2 {
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 45px;
+  border-bottom: 2px solid #fff;
+  white-space: nowrap;
+}
+
+.accordian li {
+  position: relative;
+  overflow: hidden;
+  flex: 0 0 80px;
+  border-radius: 50px;
+  opacity: 0.75;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(255, 255, 255, .15);
+
+}
+
+.accordian li img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  width: 100%;
+  height: 100%;
+  object-fit: corner;
+}
+
+.accordian li,
+.accordian li img,
+.accordian li .content,
+.accordian li .content span {
+  transition: 0.3s;
+}
+
+.accordian li .content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  color: #1E1E23;
+  visibility: hidden;
+}
+
+.accordian li .content2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  color: #1E1E23;
+  visibility: hidden;
+}
+
+.accordian li
+.content span {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  bottom: 50px;
+  translate: -300px 0;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.accordian li
+.content2 span {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  bottom: 50px;
+  translate: -300px 0;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.accordian li:hover  {
+  flex: 0 1 260px;
+  scale: 1.1;
+  z-index: 10;
+  opacity: 1;
+}
+
+
+.accordian li:hover
+.content {
+  opacity: 1;
+  visibility: visible;
+}
+
+.accordian li:hover
+.content2 {
+  opacity: 1;
+  visibility: visible;
+}
+
+.accordian li:hover span {
+  translate: -50% 0;
+  opacity: 1;
+  visibility: visible;
 }
