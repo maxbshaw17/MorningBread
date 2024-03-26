@@ -742,8 +742,7 @@ h3 a {
   flex: 0 0 80px;
   border-radius: 50px;
   opacity: 0.75;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(255, 255, 255, .15);
-
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(255, 255, 255, .1);
 }
 
 .accordian li img {
@@ -753,7 +752,23 @@ h3 a {
   translate: -50% -50%;
   width: 100%;
   height: 100%;
-  object-fit: corner;
+  object-fit: cover;
+}
+
+.accordian li::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 2;
+  transition: background-color 0.3s ease;
+}
+
+.accordian li:hover::before {
+  background-color: rgba(0, 0, 0, 0);
 }
 
 .accordian li,
@@ -781,7 +796,7 @@ h3 a {
   right: 0;
   bottom: 0;
   z-index: 1;
-  color: #1E1E23;
+  color: #fff;
   visibility: hidden;
 }
 
@@ -831,4 +846,29 @@ h3 a {
   translate: -50% 0;
   opacity: 1;
   visibility: visible;
+}
+
+/* Decorative circles */
+.circle-bottom-left {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  margin-left: -10vh;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background-color: #90a6d0;
+  z-index: 9999; 
+}
+
+.circle-top-right {
+  position: fixed;
+  top: 15vh; 
+  right: 0;
+  margin-right: -10vh;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background-color: #90a6d0;
+  z-index: 0;
 }
