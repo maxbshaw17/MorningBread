@@ -25,13 +25,14 @@ def insert_articles_db():
     try:
         mycursor.executemany(insert_sql, values)
         articles_db.commit()
-    except:
+    except Exception as error:
         articles_db.rollback()
+        print(error)
     finally:
         return mycursor.rowcount
       
 def insert_groupings_db(df):
-  insert_sql = "INSERT INTO articles_grouped (grouping, headline) VALUES (%s, %s)"
+  insert_sql = "INSERT INTO articles_grouped (group_id, headline) VALUES (%s, %s)"
   
   values = []
   
@@ -43,12 +44,11 @@ def insert_groupings_db(df):
   try:
     mycursor.executemany(insert_sql, values)
     articles_db.commit()
-  except:
+  except Exception as error:
     articles_db.rollback()
-    print('failed')
+    print('error')
   finally:
     return mycursor.rowcount
-  
      
 def delete_old_db(days):
   time_cutoff = datetime.datetime.now() - timedelta(days = days)
@@ -91,9 +91,9 @@ WHERE
     
     articles_db.commit()
     
-  except:
+  except Exception as error:
     articles_db.rollback()
-  
+    print(error)
   finally:
     return mycursor.rowcount
   

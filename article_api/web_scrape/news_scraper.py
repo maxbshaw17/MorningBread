@@ -8,6 +8,7 @@ from datetime import time
 from datetime import timedelta
 from .article import Article
 import time as python_time
+import feedparser
 # import webdriver
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -42,7 +43,9 @@ def text_to_datetime(date_string):
         nums = int(''.join([char for char in date_string if char.isdigit()]))
 
         return_date = datetime.datetime.now() - timedelta(hours=nums)
-
+    #day, 00 Mon Year 00:00:00 GMT
+    elif "GMT" in date_string:
+        return_date = datetime.datetime.strptime(date_string, "%a, %d %b %Y %H:%M:%S GMT") - timedelta(hours=5)
     return return_date
 
 # individual methods for each site
@@ -141,24 +144,18 @@ def scrape_marketwatch_rss():
     # iterate through links, have the same format
     for link in links:
 
-        page = requests.get(link)
-        soup = BeautifulSoup(page.text, 'lxml')
+        feed = feedparser.parse(link)
 
-        articles = soup.find_all('item')
+        
+        for entry in feed.entries:
+            article_headline = entry.title
+            article_link = entry.link
 
-        for article in articles:
-            article_headline = article.find('title').get_text()
-            article_link = article.find('link').get_text()
-
-            try:
-                date_text = article.find('pubDate').get_text()
-            except:
-                date_text = article.find('pubdate').get_text()
-            article_date = datetime.datetime.strptime(
-                date_text, "%a, %d %b %Y %H:%M:%S GMT") - timedelta(hours=4)
+            article_date = text_to_datetime(entry.published)
 
             article_list.append(
                 Article(article_headline, article_link, article_date, "marketwatch rss"))
+        
 
     return (article_list)
 
