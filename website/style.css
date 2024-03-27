@@ -29,6 +29,12 @@ body {
   padding: 8px 8px 6px 10px;
 }
 
+#profile:hover {
+  background-color: #8B9DC4;
+  opacity: 0.80;
+  padding: 8px 8px 6px 10px;
+}
+
 #currentDate {
   background-color: #A5B5D2;
   opacity: 0.80;
@@ -71,12 +77,6 @@ li {
 li a {
   text-decoration: none;
   color: #FFF;
-}
-
-#profile:hover {
-  background-color: #8B9DC4;
-  opacity: 0.80;
-  padding: 8px 8px 6px 10px;
 }
 
 /* Articles */
@@ -731,8 +731,7 @@ h3 a {
 .accordian h2 {
   font-weight: 400;
   font-size: 24px;
-  line-height: 45px;
-  border-bottom: 2px solid #fff;
+  line-height: 35px;
   white-space: nowrap;
 }
 
@@ -784,9 +783,21 @@ h3 a {
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 1;
+  z-index: 99999;
   color: #1E1E23;
   visibility: hidden;
+}
+
+.accordian li .content a {
+  transition: background-color 0.3s, opacity 0.3s, padding 0.3s;
+  padding: 8px 8px 6px 10px;
+  border-radius: 14px;
+}
+
+.accordian li .content a:hover {
+  background-color: #8B9DC4;
+  opacity: 0.80;
+  padding: 8px 8px 6px 10px;
 }
 
 .accordian li .content2 {
@@ -795,9 +806,37 @@ h3 a {
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 1;
+  z-index: 99999;
   color: #fff;
   visibility: hidden;
+}
+
+.accordian li .content h2 {
+  color: white;
+  background-color: rgba(30, 30, 35, 0.6);
+  border-radius: 14px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.accordian li .content2 h2 {
+  color: white;
+  background-color: rgba(30, 30, 35, 0.6);
+  border-radius: 14px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.accordian li .content2 a {
+  transition: background-color 0.3s, opacity 0.3s, padding 0.3s;
+  padding: 8px 8px 6px 10px;
+  border-radius: 14px;
+}
+
+.accordian li .content2 a:hover {
+  background-color: #8B9DC4;
+  opacity: 0.80;
+  padding: 8px 8px 6px 10px;
 }
 
 .accordian li
@@ -849,6 +888,7 @@ h3 a {
 }
 
 /* Decorative circles */
+
 .circle-bottom-left {
   position: fixed;
   bottom: 0;
