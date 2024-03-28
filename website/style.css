@@ -250,6 +250,7 @@ li a {
   font-size: 14px;
   border: none;
   cursor: pointer;
+  transition: 0.3s;
 }
 
 .topnav .search-container button:hover {
@@ -627,6 +628,11 @@ header {
 .contact a {
   text-decoration: none;
   color: #efefef;
+  transition: 0.3s;
+}
+
+.contact a:hover {
+  color:#a1a1a1;
 }
 
 /* End of contact.html */
