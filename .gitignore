@@ -2,3 +2,4 @@ article_api/__pycache__
 article_api/db_update/__pycache__
 article_api/web_scrape/__pycache__
 article_api/nlp_algo/__pycache__
+article_api/LSA_test
