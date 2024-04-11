@@ -1,5 +1,5 @@
 import mysql.connector
-from sql_updater import *
+from article_api.db_update.db_connection import *
 from nlp_algo.nlp_functions import *
 from db_update.db_connector import *
 
