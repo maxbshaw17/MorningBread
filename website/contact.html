@@ -1,16 +1,25 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>MorningBread</title>
+        <title>MorningBread | Contact</title>
         <link rel="icon" href="placeholder_image.png">
         <link href="style.css" type="text/css" rel="stylesheet">
+        <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+        <script>
+            emailjs.init("g0DUuIImNTUn6r7A6");
+        </script>        
     </head>
     <body>
-    <h1>MorningBread</h1>
-    <ul class="navigation">
-        <li><a href= 'main.html' class = 'active'>Articles</a></li>
-        <li>Tickers</li>
-        <li><a href= 'profile.html'>Profile</a></li>
+    <h1><a href = 'main.html' class = 'active'>MorningBread</a></h1>
+        <ul class="navigation_contact">
+            <li><a id='currentDate'>Date</a></li>
+            <li><a href= 'profile.html' id='profile'>Profile</a></li>
+        <script>
+            var currentDateElement = document.getElementById('currentDate');
+            var currentDate = new Date();
+            var options = { year: 'numeric', month: 'long', day: 'numeric' };
+            currentDateElement.innerText = currentDate.toLocaleDateString(undefined, options);
+        </script>
       </ul>
     <div class = 'contact-wrapper'>
     <div class = 'contact'>
@@ -34,15 +43,83 @@
             type = "message" name="message" required></textarea>
         <br>
         <br>
-        <button type="submit">Submit</button>
+        <button type="submit" onclick = "onSubmitForm()">Submit</button>
     </form>
 </div>
 </div>
     </body>
+    <div class="popup-container">
+        <div class="popup">
+            <p>Thank you for submitting the form!</p>
+            <div class="close-button">
+                <button onclick="closePopup()">Go back to MorningBread</button>
+            </div>
+        </div>
+    </div>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const hasSubmitted = sessionStorage.getItem('formSubmitted');
+        
+        if (hasSubmitted) {
+            // If the form has been submitted, show the popup
+            showThankYouMessage();
+            
+            // Clear the flag to avoid showing the popup on subsequent page loads
+            sessionStorage.removeItem('formSubmitted');
+        }
+    });
+            const emailjsConfig = {
+            userId: "g0DUuIImNTUn6r7A6",
+            serviceId: "service_7tchd16",
+            templateId: "template_opam4d4",
+    };
+        emailjs.init(emailjsConfig.userId);
+
+    function onSubmitForm() {
+        const firstName = document.querySelector('input[name="first_name"]').value;
+        const lastName = document.querySelector('input[name="last_name"]').value || 'N/A';
+        const email = document.querySelector('input[name="email"]').value;
+        const message = document.querySelector('textarea[name="message"]').value;
+
+        // Prepare the template parameters
+        const templateParams = {
+        from_name: `${firstName} ${lastName}`,
+        email: email,
+        message: message,
+        };
+
+        // Send the email using Email.js
+        emailjs.send("service_7tchd16", "template_opam4d4", templateParams)
+        .then(function(response) {
+            console.log("Email sent successfully:", response);
+            showThankYouMessage();
+        })
+        .catch(function(error) {
+            console.error("Error sending email:", error);
+        });
+
+        // Set the flag indicating that the form has been submitted
+  }
+
+    function showThankYouMessage() {
+        // Show the pop-up
+        const popupContainer = document.querySelector('.popup-container');
+        popupContainer.style.display = 'block';
+
+        // Reset the form
+        document.querySelector('.contact_form').reset();
+    }
+
+    function closePopup() {
+        // Hide the pop-up
+        const popupContainer = document.querySelector('.popup-container');
+        popupContainer.style.display = 'none';
+  }
+</script>
     <footer>
         <a href = 'https://github.com/maxbshaw17/MorningBread' target = '_blank'>
             <img src = 'https://cdn-icons-png.flaticon.com/512/25/25231.png'
             height = "36"></a>
+        <h3><a href = 'contact.html' class = 'active'>Contact Us</a></h3>
     </footer>
-    <h3><a href = 'contact.html' class = 'active'>Contact Us</a></h3>
 </html>
