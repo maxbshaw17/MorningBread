@@ -43,9 +43,10 @@ def text_to_datetime(date_string):
         nums = int(''.join([char for char in date_string if char.isdigit()]))
 
         return_date = datetime.datetime.now() - timedelta(hours=nums)
-    #day, 00 Mon Year 00:00:00 GMT
+    # day, 00 Mon Year 00:00:00 GMT
     elif "GMT" in date_string:
-        return_date = datetime.datetime.strptime(date_string, "%a, %d %b %Y %H:%M:%S GMT") - timedelta(hours=5)
+        return_date = datetime.datetime.strptime(
+            date_string, "%a, %d %b %Y %H:%M:%S GMT") - timedelta(hours=5)
     return return_date
 
 # individual methods for each site
@@ -146,7 +147,6 @@ def scrape_marketwatch_rss():
 
         feed = feedparser.parse(link)
 
-        
         for entry in feed.entries:
             article_headline = entry.title
             article_link = entry.link
@@ -155,7 +155,6 @@ def scrape_marketwatch_rss():
 
             article_list.append(
                 Article(article_headline, article_link, article_date, "marketwatch rss"))
-        
 
     return (article_list)
 

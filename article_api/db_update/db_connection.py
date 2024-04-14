@@ -2,9 +2,11 @@
 import mysql.connector
 from datetime import timedelta
 from datetime import datetime
+import pandas as pd
+
 
 class DB_Connection:
-    
+
     def __init__(self, host, user, password, port, database):
         self.articles_db = mysql.connector.connect(
             host=host,
@@ -13,9 +15,8 @@ class DB_Connection:
             port=port,
             database=database
         )
-        
+
         self.mycursor = self.articles_db.cursor()
-        
 
     def insert_articles_db(self, articles):
         insert_sql = "INSERT INTO articles (headline, link, date, source) VALUES (%s, %s, %s, %s)"
@@ -24,7 +25,24 @@ class DB_Connection:
 
         for article in articles:
             values.append((article.headline, article.link,
-                        article.date, article.source))
+                           article.date, article.source))
+
+        try:
+            self.mycursor.executemany(insert_sql, values)
+            self.articles_db.commit()
+        except Exception as error:
+            self.articles_db.rollback()
+            print(error)
+        finally:
+            return self.mycursor.rowcount
+        
+    def insert_summaries_db(self, summaries):
+        insert_sql = "INSERT INTO summarized_articles (group_id, summarized_headline) VALUES (%s, %s)"
+
+        values = []
+
+        for summary in summaries:
+            values.append((summary[0], summary[1]))
 
         try:
             self.mycursor.executemany(insert_sql, values)
@@ -35,9 +53,8 @@ class DB_Connection:
         finally:
             return self.mycursor.rowcount
 
-
     def insert_groupings_db(self, df):
-        insert_sql = "INSERT INTO articles_grouped (group_id, headline) VALUES (%s, %s)"
+        insert_sql = "INSERT INTO headline_groups (group_id, headline) VALUES (%s, %s)"
 
         values = []
 
@@ -53,7 +70,6 @@ class DB_Connection:
         finally:
             return self.mycursor.rowcount
 
-
     def delete_old_db(self, days):
         time_cutoff = datetime.now() - timedelta(days=days)
 
@@ -66,7 +82,6 @@ class DB_Connection:
             self.articles_db.rollback()
         finally:
             return self.mycursor.rowcount
-
 
     def remove_dupes_db(self, table, column):
         try:
@@ -102,7 +117,6 @@ class DB_Connection:
         finally:
             return self.mycursor.rowcount
 
-
     def delete_all(self, table):
         insert_sql = f"DELETE FROM {table}"
 
@@ -114,6 +128,18 @@ class DB_Connection:
         finally:
             return self.mycursor.rowcount
 
+    def join_groups(self):
+        insert_sql = """INSERT INTO articles_grouped SELECT headline_groups.*, articles.link, articles.`date`, articles.`source`
+        FROM headline_groups 
+        JOIN articles ON headline_groups.headline = articles.headline;"""
+
+        try:
+            self.mycursor.execute(insert_sql)
+            self.articles_db.commit()
+        except:
+            self.articles_db.rollback()
+        finally:
+            return self.mycursor.rowcount
 
     def get_all_headlines(self):
         headlines = []
@@ -123,7 +149,6 @@ class DB_Connection:
 
         return headlines
 
-
     def execute_sql(self, command_string):
         return_data = []
         self.mycursor.execute(command_string)
@@ -131,3 +156,15 @@ class DB_Connection:
             return_data.append(line)
 
         return return_data
+
+    def get_groups(self):
+        data = []
+        self.mycursor.execute("SELECT * FROM articles_grouped")
+
+        for x in self.mycursor:
+            data.append(x)
+
+        df = pd.DataFrame(
+            data, columns=['id', 'group_id', 'headline', 'link', 'date', 'source'])
+
+        return df

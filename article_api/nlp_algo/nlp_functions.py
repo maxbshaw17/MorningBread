@@ -9,11 +9,15 @@ import string
 from nltk.tokenize import word_tokenize, sent_tokenize
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
+from openai import OpenAI
 
 default_stemmer = PorterStemmer()
-default_stopwords = stopwords.words('english') # or any other list of your choice
+# or any other list of your choice
+default_stopwords = stopwords.words('english')
 
 # check for repeats - need to fix on sql side
+
+
 def remove_repeats(headlines):
     text_no_repeats = []
     for sent in headlines:
@@ -21,8 +25,9 @@ def remove_repeats(headlines):
             text_no_repeats.append(sent)
     return (text_no_repeats)
 
+
 def clean_text(text, ):
-    
+
     punc = []
     for i in string.punctuation:
         punc.append(i)
@@ -47,46 +52,63 @@ def clean_text(text, ):
         tokens = [w for w in tokenize_text(text) if w not in stop_words]
         return ' '.join(tokens)
 
-    text = text.strip(' ') # strip whitespaces
-    text = text.lower() # lowercase
-    text = stem_text(text) # stemming
-    text = remove_special_characters(text) # remove punctuation and symbols
-    text = remove_stopwords(text) # remove stopwords
-    text.strip(' ') # strip whitespaces again?
+    text = text.strip(' ')  # strip whitespaces
+    text = text.lower()  # lowercase
+    text = stem_text(text)  # stemming
+    text = remove_special_characters(text)  # remove punctuation and symbols
+    text = remove_stopwords(text)  # remove stopwords
+    text.strip(' ')  # strip whitespaces again?
 
     return text
+
 
 def clean_text_list(text_list):
     text_list = remove_repeats(text_list)
     return list(map(lambda text: clean_text(text), text_list))
+
 
 def knn_plot(text_array):
     neigh = NearestNeighbors(n_neighbors=2)
     nbrs = neigh.fit(text_array)
     distances, indices = nbrs.kneighbors(text_array)
     distances = np.sort(distances, axis=0)
-    distances = distances[:,1]
+    distances = distances[:, 1]
 
-    plt.figure(figsize=(7,4))
+    plt.figure(figsize=(7, 4))
     plt.plot(distances)
-    plt.title('K-Distance - Check where it bends',fontsize=16)
-    plt.xlabel('Data Points - sorted by Distance',fontsize=12)
-    plt.ylabel('Epsilon',fontsize=12)
+    plt.title('K-Distance - Check where it bends', fontsize=16)
+    plt.xlabel('Data Points - sorted by Distance', fontsize=12)
+    plt.ylabel('Epsilon', fontsize=12)
     plt.show()
+
 
 def text_vectorizer(text_list):
     text = remove_repeats(text_list)
     text_cleaned = clean_text_list(text_list)
-    
+
     cv = CountVectorizer()
     x = cv.fit_transform(text_cleaned)
     return x.toarray(), text
 
+
 def fit_dbscan_text(text_array, text, ep=1, min_s=2):
-    dbscan_opt=DBSCAN(eps = ep,min_samples = min_s)
+    dbscan_opt = DBSCAN(eps=ep, min_samples=min_s)
     dbscan_opt.fit(text_array)
-    df_data = {"group": dbscan_opt.labels_, "sentence" : text}
+    df_data = {"group": dbscan_opt.labels_, "sentence": text}
     df = pd.DataFrame(data=df_data)
-    
+
     return df
 
+
+def prompt_chat_gpt(prompt_message):
+    client = OpenAI(api_key="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")
+
+    completion = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": "You are a text summarizer. You are given multiple sentences relating to the same topic, and will return a sentence of similiar length that is a concise summary of the sentences you were given. You return this sentence as your only output, with no additional text"},
+            {"role": "user", "content": prompt_message}
+        ]
+    )
+
+    return completion.choices[0].message
