@@ -18,6 +18,35 @@ class DB_Connection:
 
         self.mycursor = self.articles_db.cursor()
 
+    def insert_into_table(self, table: str, df: pd.DataFrame) -> int:
+        # get columns and convert to a string
+        column_names = df.columns
+        column_names_string = ", ".join(column_names)
+
+        # create values placeholder string
+        values_placeholder = "%s, " * len(column_names)
+        values_placeholder = values_placeholder[:-2]
+
+        # compile the sql command
+        insert_sql = f"INSERT INTO {table} ({column_names_string}) VALUES ({values_placeholder})"
+        
+        #create values array
+        values = []
+        for index, row in df.iterrows():
+            values.append(tuple(row))
+        
+        #execute sql
+        try:
+            self.mycursor.executemany(insert_sql, values)
+            self.articles_db.commit()
+            print(f'inserted {self.mycursor.rowcount} rows to "{table}"')
+        except Exception as error:
+            self.articles_db.rollback()
+            print(f'error inserting into "{table}"\n{error}')
+        finally:
+            return self.mycursor.rowcount
+        
+
     def insert_articles_db(self, articles):
         insert_sql = "INSERT INTO articles (headline, link, date, source) VALUES (%s, %s, %s, %s)"
 
@@ -35,7 +64,7 @@ class DB_Connection:
             print(error)
         finally:
             return self.mycursor.rowcount
-        
+
     def insert_summaries_db(self, summaries):
         insert_sql = "INSERT INTO summarized_articles (group_id, summarized_headline) VALUES (%s, %s)"
 

@@ -27,14 +27,14 @@ headlines = connection.get_all_headlines()
 array, sents = text_vectorizer(headlines)
 
 # group using DBSCAN
-fit_df = fit_dbscan_text(array, sents, ep=2.5, min_s=2)
+fit_df = fit_dbscan_text(array, sents, ep=2.75, min_s=2)
 
 # clear the grouped articles table and joined table
 connection.delete_all("articles_grouped")
 connection.delete_all("headline_groups")
 
 # insert generated groupings
-connection.insert_groupings_db(fit_df)
+connection.insert_into_table("headline_groups", fit_df)
 
 # join groupings table with information table
 connection.join_groups()
@@ -64,4 +64,5 @@ for group_sents in sent_list:
     summarized_sents.append((group_sents[0], summary))
 
 # insert summaries into table
+connection.delete_all("summarized_articles")
 connection.insert_summaries_db(summarized_sents)
