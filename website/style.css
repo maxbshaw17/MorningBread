@@ -88,7 +88,7 @@ li a {
   gap: 20px;
   padding-top: 20px;
   padding-left: 20px;
-  width: 82.25%
+  width: 82.25%;
 }
 
 .featured-article,
@@ -148,7 +148,7 @@ li a {
 /* Tickers */
 
 .ticker-container {
-  position: fixed;
+  position: absolute;
   color: #2a2a30;
   right: 0;
   width: 30vh;
@@ -156,6 +156,7 @@ li a {
   background-color: #c6c6c6;
   border-left: 6px solid #ddd;
   border-right: 6px solid #ddd;
+  border-bottom: 6px solid #ddd;
   display: flex;
   flex-direction: column; 
   justify-content: flex-start; 
