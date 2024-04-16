@@ -85,7 +85,6 @@ li a {
   display: flex;
   flex-direction: column;
   background-color: #1E1E23;
-  gap: 20px;
   padding-top: 20px;
   padding-left: 20px;
   width: 82.25%;
@@ -100,6 +99,7 @@ li a {
   box-sizing: border-box;
   background-color: #282832; 
   border-radius: 20px;
+  margin-bottom: 1.5rem;
 }
 
 .featured-article > h1,
