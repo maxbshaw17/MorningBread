@@ -94,7 +94,7 @@ def text_vectorizer(text_list):
 def fit_dbscan_text(text_array, text, ep=1, min_s=2):
     dbscan_opt = DBSCAN(eps=ep, min_samples=min_s)
     dbscan_opt.fit(text_array)
-    df_data = {"group": dbscan_opt.labels_, "sentence": text}
+    df_data = {"group": dbscan_opt.labels_, "sent": text}
     df = pd.DataFrame(data=df_data)
 
     return df

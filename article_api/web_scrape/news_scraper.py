@@ -1,5 +1,4 @@
 # import libraries
-import requests
 from requests_html import HTMLSession
 from bs4 import BeautifulSoup
 import datetime
@@ -9,6 +8,7 @@ from datetime import timedelta
 from .article import Article
 import time as python_time
 import feedparser
+import pandas as pd
 # import webdriver
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -170,4 +170,13 @@ def scrape_all():
     for article in scrape_marketwatch_rss():
         article_list.append(article)
 
-    return article_list
+    # converts list of article objects to dataframe
+    return pd.DataFrame(
+        list(map(lambda article: article.to_list(), article_list)),
+        columns = ['headline', 'link', 'date', 'source'])
+        
+
+
+if __name__ == "__main__":
+    x = scrape_all()
+    print(x)

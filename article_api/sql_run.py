@@ -13,9 +13,9 @@ connection = DB_Connection(
 )
 
 # upload new articles and remove old ones
-articles = scrape_all()
+articles_df = scrape_all()
 
-connection.insert_articles_db(articles)
+connection.insert_into_table(table = "articles", dataframe = articles_df)
 
 connection.delete_old_db(days=1.5)
 
@@ -34,7 +34,7 @@ connection.delete_all("articles_grouped")
 connection.delete_all("headline_groups")
 
 # insert generated groupings
-connection.insert_into_table("headline_groups", fit_df)
+connection.insert_into_table(table = "headline_groups", dataframe = fit_df, column_relationships = {"group": "group_id", "sent":"headline"})
 
 # join groupings table with information table
 connection.join_groups()

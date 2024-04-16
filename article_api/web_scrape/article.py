@@ -10,6 +10,9 @@ class Article:
     def __str__(self):
         return f"{self.headline}, {self.date}, {self.link}, {self.source}"
     
+    def to_list(self):
+        return [self.headline, self.link, self.date, self.source]
+    
     #getters and setters
     def getHeadline(self):
         return self.headline

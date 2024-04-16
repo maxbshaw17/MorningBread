@@ -18,53 +18,51 @@ class DB_Connection:
 
         self.mycursor = self.articles_db.cursor()
 
-    def insert_into_table(self, table: str, df: pd.DataFrame) -> int:
-        # get columns and convert to a string
-        column_names = df.columns
-        column_names_string = ", ".join(column_names)
+    def insert_into_table(self, table: str, dataframe: pd.DataFrame, column_relationships: dict = {}) -> int:
+        # initialize column names, value array, column count
+        column_names_string = ""
+        values = []
+        col_count = 0
+        
+        if column_relationships: # column relationships provided
+            column_names_string = ", ".join(column_relationships.values()) # set sql column names
+            col_count = len(column_relationships)
+            
+            # add values in order provided
+            for index, row in dataframe.iterrows():
+                value_row = []
+                
+                for key in column_relationships.keys():
+                    value_row.append(row[key])
+                    
+                values.append(value_row)
+        
+        else: # no relationships provided
+            column_names_string = ", ".join(dataframe.columns)# get columns and convert to a string
+            col_count = len(dataframe.columns)
+            
+            # add values in order in the df
+            for index, row in dataframe.iterrows():
+                values.append(tuple(row))
 
         # create values placeholder string
-        values_placeholder = "%s, " * len(column_names)
+        values_placeholder = "%s, " * col_count
         values_placeholder = values_placeholder[:-2]
 
         # compile the sql command
         insert_sql = f"INSERT INTO {table} ({column_names_string}) VALUES ({values_placeholder})"
         
-        #create values array
-        values = []
-        for index, row in df.iterrows():
-            values.append(tuple(row))
-        
-        #execute sql
+        # execute sql
         try:
             self.mycursor.executemany(insert_sql, values)
             self.articles_db.commit()
             print(f'inserted {self.mycursor.rowcount} rows to "{table}"')
         except Exception as error:
             self.articles_db.rollback()
-            print(f'error inserting into "{table}"\n{error}')
+            print(f'error inserting into "{table}": {error}')
         finally:
             return self.mycursor.rowcount
         
-
-    def insert_articles_db(self, articles):
-        insert_sql = "INSERT INTO articles (headline, link, date, source) VALUES (%s, %s, %s, %s)"
-
-        values = []
-
-        for article in articles:
-            values.append((article.headline, article.link,
-                           article.date, article.source))
-
-        try:
-            self.mycursor.executemany(insert_sql, values)
-            self.articles_db.commit()
-        except Exception as error:
-            self.articles_db.rollback()
-            print(error)
-        finally:
-            return self.mycursor.rowcount
-
     def insert_summaries_db(self, summaries):
         insert_sql = "INSERT INTO summarized_articles (group_id, summarized_headline) VALUES (%s, %s)"
 
