@@ -1,7 +1,7 @@
 # imports
-from db_update.db_connection import *
-from nlp_algo.nlp_functions import *
-from web_scrape.news_scraper import *
+from mb_functions.db_connection import *
+from mb_functions.news_scraper import *
+from mb_functions.nlp_functions import *
 
 # create database connection object
 connection = DB_Connection(
