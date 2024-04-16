@@ -17,10 +17,10 @@ articles_df = scrape_all()
 
 connection.insert_into_table(table = "articles", dataframe = articles_df)
 
-connection.delete_old_db(days=1.5)
+connection.delete_from_table(table = "articles", days=1.5)
 
 # remove duplicate articles
-connection.remove_dupes_db("articles", "headline")
+connection.delete_dupes_from_table(table = "articles")
 
 # pull headlines and vectorize
 headlines = connection.get_all_headlines()
@@ -30,8 +30,8 @@ array, sents = text_vectorizer(headlines)
 fit_df = fit_dbscan_text(array, sents, ep=2.75, min_s=2)
 
 # clear the grouped articles table and joined table
-connection.delete_all("articles_grouped")
-connection.delete_all("headline_groups")
+connection.delete_from_table(table = "articles_grouped", clear = True)
+connection.delete_from_table(table = "headline_groups", clear = True)
 
 # insert generated groupings
 connection.insert_into_table(table = "headline_groups", dataframe = fit_df, column_relationships = {"group": "group_id", "sent":"headline"})
@@ -64,5 +64,5 @@ for group_sents in sent_list:
     summarized_sents.append((group_sents[0], summary))
 
 # insert summaries into table
-connection.delete_all("summarized_articles")
+connection.delete_from_table(table = "summarized_articles", clear = True)
 connection.insert_summaries_db(summarized_sents)

@@ -62,23 +62,6 @@ class DB_Connection:
             print(f'error inserting into "{table}": {error}')
         finally:
             return self.mycursor.rowcount
-        
-    def insert_summaries_db(self, summaries):
-        insert_sql = "INSERT INTO summarized_articles (group_id, summarized_headline) VALUES (%s, %s)"
-
-        values = []
-
-        for summary in summaries:
-            values.append((summary[0], summary[1]))
-
-        try:
-            self.mycursor.executemany(insert_sql, values)
-            self.articles_db.commit()
-        except Exception as error:
-            self.articles_db.rollback()
-            print(error)
-        finally:
-            return self.mycursor.rowcount
 
     def insert_groupings_db(self, df):
         insert_sql = "INSERT INTO headline_groups (group_id, headline) VALUES (%s, %s)"
@@ -97,61 +80,55 @@ class DB_Connection:
         finally:
             return self.mycursor.rowcount
 
-    def delete_old_db(self, days):
-        time_cutoff = datetime.now() - timedelta(days=days)
+    def delete_from_table(self, table: str, days: float = 0, clear: bool = False) -> int:
+        if clear: # remove all entries
+            try:
+                self.mycursor.execute(f"DELETE FROM {table}")
+                self.articles_db.commit()
+                print(f'deleted {self.mycursor.rowcount} rows from "{table}"')
+            except Exception as error:
+                self.articles_db.rollback()
+                print(f'error deleting from "{table}": {error}')
+            finally:
+                return self.mycursor.rowcount
 
-        insert_sql = f"DELETE FROM articles WHERE date < '{str(time_cutoff)}'"
+        else: # delete entries based on date field
+            time_cutoff = datetime.now() - timedelta(days=days)
 
+            insert_sql = f"DELETE FROM {table} WHERE date < '{str(time_cutoff)}'"
+
+            try:
+                self.mycursor.execute(f"DELETE FROM {table}")
+                self.articles_db.commit()
+                print(f'deleted {self.mycursor.rowcount} rows from "{table}"')
+            except Exception as error:
+                self.articles_db.rollback()
+                print(f'error deleting from "{table}": {error}')
+            finally:
+                return self.mycursor.rowcount
+
+    def delete_dupes_from_table(self, table: str, columns: list = []) -> int:
+        columns_string = "" # initialize columns to pass into the command
+        
+        if columns: # columns provided
+            columns_string = ", ".join(columns)
+        else: # no columns provided, assumes all columns
+            columns_string = "(SELECT 1)"
+        
+        insert_sql = f"""WITH CTE AS (
+                            SELECT *,
+                                    ROW_NUMBER() OVER (PARTITION BY {columns_string}) ORDER BY id) AS row_num
+                            FROM {table}
+                            )
+                            DELETE FROM CTE WHERE row_num > 1;"""
+        
         try:
             self.mycursor.execute(insert_sql)
             self.articles_db.commit()
-        except:
-            self.articles_db.rollback()
-        finally:
-            return self.mycursor.rowcount
-
-    def remove_dupes_db(self, table, column):
-        try:
-            command = f"""DELETE FROM
-        {table}
-        WHERE
-        id IN (
-            SELECT
-            id
-            FROM
-            (
-                SELECT
-                id,
-                ROW_NUMBER() OVER (
-                    PARTITION BY {column}
-                    ORDER BY
-                    {column}
-                ) AS row_num
-                FROM
-                {table}
-            ) t
-            WHERE
-            row_num > 1
-        );"""
-
-            self.mycursor.execute(command)
-
-            self.articles_db.commit()
-
+            print(f'deleted {self.mycursor.rowcount} rows from "{table}"')
         except Exception as error:
             self.articles_db.rollback()
-            print(error)
-        finally:
-            return self.mycursor.rowcount
-
-    def delete_all(self, table):
-        insert_sql = f"DELETE FROM {table}"
-
-        try:
-            self.mycursor.execute(insert_sql)
-            self.articles_db.commit()
-        except:
-            self.articles_db.rollback()
+            print(f'error deleting from "{table}": {error}')
         finally:
             return self.mycursor.rowcount
 
