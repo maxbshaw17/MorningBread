@@ -63,23 +63,6 @@ class DB_Connection:
         finally:
             return self.mycursor.rowcount
 
-    def insert_groupings_db(self, df):
-        insert_sql = "INSERT INTO headline_groups (group_id, headline) VALUES (%s, %s)"
-
-        values = []
-
-        for index, row in df.iterrows():
-            values.append((row['group'], row['sentence']))
-
-        try:
-            self.mycursor.executemany(insert_sql, values)
-            self.articles_db.commit()
-        except Exception as error:
-            self.articles_db.rollback()
-            print('error')
-        finally:
-            return self.mycursor.rowcount
-
     def delete_from_table(self, table: str, days: float = 0, clear: bool = False) -> int:
         if clear: # remove all entries
             try:
@@ -98,7 +81,7 @@ class DB_Connection:
             insert_sql = f"DELETE FROM {table} WHERE date < '{str(time_cutoff)}'"
 
             try:
-                self.mycursor.execute(f"DELETE FROM {table}")
+                self.mycursor.execute(insert_sql)
                 self.articles_db.commit()
                 print(f'deleted {self.mycursor.rowcount} rows from "{table}"')
             except Exception as error:
@@ -107,25 +90,18 @@ class DB_Connection:
             finally:
                 return self.mycursor.rowcount
 
-    def delete_dupes_from_table(self, table: str, columns: list = []) -> int:
-        columns_string = "" # initialize columns to pass into the command
+    def delete_dupes_from_table(self, table: str, columns: list) -> int:
+        columns_string = ", ".join(columns)
         
-        if columns: # columns provided
-            columns_string = ", ".join(columns)
-        else: # no columns provided, assumes all columns
-            columns_string = "(SELECT 1)"
-        
-        insert_sql = f"""WITH CTE AS (
-                            SELECT *,
-                                    ROW_NUMBER() OVER (PARTITION BY {columns_string}) ORDER BY id) AS row_num
-                            FROM {table}
-                            )
-                            DELETE FROM CTE WHERE row_num > 1;"""
+        insert_sql = f"""delete from `{table}` where id not in
+                        ( SELECT * FROM 
+                            (select min(id) from `{table}` group by {columns_string}) AS temp_tab
+                        );"""
         
         try:
             self.mycursor.execute(insert_sql)
             self.articles_db.commit()
-            print(f'deleted {self.mycursor.rowcount} rows from "{table}"')
+            print(f'deleted {self.mycursor.rowcount} duplicate rows from "{table}"')
         except Exception as error:
             self.articles_db.rollback()
             print(f'error deleting from "{table}": {error}')
@@ -140,7 +116,8 @@ class DB_Connection:
         try:
             self.mycursor.execute(insert_sql)
             self.articles_db.commit()
-        except:
+        except Exception as error:
+            print(f"error joining tables: {error}")
             self.articles_db.rollback()
         finally:
             return self.mycursor.rowcount
