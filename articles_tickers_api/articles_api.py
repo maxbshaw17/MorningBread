@@ -22,7 +22,7 @@ def index():
 @app.route('/articles_tickers_api/articles_api', methods=['GET'])
 def get_articles():
     # Query the database for article headlines
-    c.execute("SELECT headline FROM articles_grouped")
+    c.execute("SELECT headline FROM articles")
     articles = c.fetchall()
     column_names = [column[0] for column in c.description]
 

@@ -10,6 +10,14 @@ fetch('http://127.0.0.1:5000/articles_tickers_api/articles_api')
     console.log("After fetch");
     const dynamicArticlesContainer = document.getElementById('dynamic-articles');
 
+    // Create the featured article section
+    const featuredArticleSection = document.createElement('div');
+    featuredArticleSection.classList.add('featured-article-section');
+
+    // Create the secondary articles section
+    const secondaryArticlesSection = document.createElement('div');
+    secondaryArticlesSection.classList.add('secondary-articles-section');
+
     articles.forEach((article, index) => {
       // Create the featured article element
       const featuredArticleElement = document.createElement('div');
@@ -44,22 +52,28 @@ fetch('http://127.0.0.1:5000/articles_tickers_api/articles_api')
         </div>
       `;
 
-      // Append the elements to the container
-      dynamicArticlesContainer.appendChild(featuredArticleElement);
-      dynamicArticlesContainer.appendChild(secondaryArticleElement);
+      // Append the featured article to the featured article section
+      featuredArticleSection.appendChild(featuredArticleElement);
+
+      // Append the secondary article to the secondary articles section
+      secondaryArticlesSection.appendChild(secondaryArticleElement);
     });
+
+    // Append the sections to the container
+    dynamicArticlesContainer.appendChild(featuredArticleSection);
+    dynamicArticlesContainer.appendChild(secondaryArticlesSection);
 
     // Add click event listener to each "Read More" link
     const readMoreLinks = document.querySelectorAll('.read-more-link');
-
+    
     readMoreLinks.forEach(link => {
       const articleSummary = link.parentNode.querySelector('.article-summary');
       const articleLink = link.parentNode.querySelector('.article-link');
-    
+      
       // Initially, set the summary and link to be hidden
       articleSummary.style.display = 'none';
       articleLink.style.display = 'none';
-    
+
       link.addEventListener('click', () => {
         articleSummary.style.display = articleSummary.style.display === 'none' ? 'block' : 'none';
         articleLink.style.display = articleLink.style.display === 'none' ? 'inline' : 'none';

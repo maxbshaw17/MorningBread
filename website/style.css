@@ -87,7 +87,7 @@ li a {
   background-color: #1E1E23;
   padding-top: 20px;
   padding-left: 20px;
-  width: 82.25%;
+  width: 81.5%;
 }
 
 .featured-article,
@@ -157,6 +157,8 @@ li a {
   border-left: 6px solid #ddd;
   border-right: 6px solid #ddd;
   border-bottom: 6px solid #ddd;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
   display: flex;
   flex-direction: column; 
   justify-content: flex-start; 
