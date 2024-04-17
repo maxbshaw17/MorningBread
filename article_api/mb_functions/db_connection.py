@@ -138,12 +138,17 @@ class DB_Connection:
 
         return return_data
 
-    def get_groups(self):
+    def pull_from_table(self, table: str, columns: list = []) -> pd.DataFrame:
         data = []
-        self.mycursor.execute("SELECT * FROM articles_grouped")
+        columns_string = ""
+        
+        if columns: # columns are provided
+            columns_string = f"({", ".join(columns)})"
+            
+        self.mycursor.execute(f"SELECT {columns_string} FROM {table}")
 
-        for x in self.mycursor:
-            data.append(x)
+        for row in self.mycursor:
+            data.append(row)
 
         df = pd.DataFrame(
             data, columns=['id', 'group_id', 'headline', 'link', 'date', 'source'])
