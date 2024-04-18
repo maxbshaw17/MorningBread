@@ -19,6 +19,11 @@ class DB_Connection:
         self.mycursor = self.articles_db.cursor()
 
     def insert_into_table(self, table: str, dataframe: pd.DataFrame, column_relationships: dict = {}) -> int:
+        """Inserts a dataframe into an SQL table\n
+        table: target table in SQL database\n
+        dataframe: data to insert\n
+        column_relationships: dictionary of dataframe and SQL column relationships\n
+        \t{dataframe column : sql column}"""
         # initialize column names, value array, column count
         column_names_string = ""
         values = []
@@ -64,6 +69,11 @@ class DB_Connection:
             return self.mycursor.rowcount
 
     def delete_from_table(self, table: str, days: float = 0, clear: bool = False) -> int:
+        """Deletes rows from the target table. Deletes based on the date column, or everything is deleted\n
+        table: target table\n
+        days: how many days in the past to keep\n
+        \tFor example, days = 2 keeps rows where the date column is within the last 2 days\n
+        clear: if true, deletes all rows from the table, ignoring any other inputs"""
         if clear: # remove all entries
             try:
                 self.mycursor.execute(f"DELETE FROM {table}")
@@ -122,35 +132,39 @@ class DB_Connection:
         finally:
             return self.mycursor.rowcount
 
-    def get_all_headlines(self):
-        headlines = []
-        self.mycursor.execute("SELECT headline FROM articles")
-        for x in self.mycursor:
-            headlines.append(x[0])
-
-        return headlines
-
-    def execute_sql(self, command_string):
-        return_data = []
-        self.mycursor.execute(command_string)
-        for line in self.mycursor:
-            return_data.append(line)
-
-        return return_data
-
-    def pull_from_table(self, table: str, columns: list = []) -> pd.DataFrame:
+    def read_table(self, table: str, column_relationships: dict = {}) -> pd.DataFrame:
+        """Reads from target table and creates a same sized dataframe\n
+        table: target table\n
+        column_relationships: dictionary of dataframe and SQL column relationships\n
+        \t{dataframe column : sql column}"""
         data = []
-        columns_string = ""
+        sql_columns_string = ""
+        df_columns_list = []
         
-        if columns: # columns are provided
-            columns_string = f"({", ".join(columns)})"
+        if column_relationships: # columns are provided
+            sql_columns_string = f"{", ".join(column_relationships.values())}"
+            df_columns_list = column_relationships.keys()
+        else: # no columns provided, grabs all
+            sql_columns_string = '*'
             
-        self.mycursor.execute(f"SELECT {columns_string} FROM {table}")
-
-        for row in self.mycursor:
+            try: # tries to grab all column names
+                self.mycursor.execute(f"""SELECT COLUMN_NAME
+                                      FROM INFORMATION_SCHEMA.COLUMNS
+                                      WHERE TABLE_NAME='{table}'""")
+                for column in self.mycursor: # appends columns from returned list
+                    df_columns_list.append(column[0]) # for some reason, columns are read in as tuples
+            except Exception as error:
+                print(f'error retrieveing column names from "{table}": {error}')
+        
+        try:
+            self.mycursor.execute(f"SELECT {sql_columns_string} FROM {table}")
+        except Exception as error:
+            print(f'error retrieving data from "{table}": {error}')
+        
+        for row in self.mycursor: # appends rows into data array
             data.append(row)
 
-        df = pd.DataFrame(
-            data, columns=['id', 'group_id', 'headline', 'link', 'date', 'source'])
+        df = pd.DataFrame( # converts array into dataframe
+            data, columns = df_columns_list)
 
         return df

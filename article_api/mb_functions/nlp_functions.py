@@ -14,17 +14,6 @@ default_stemmer = PorterStemmer()
 # or any other list of your choice
 default_stopwords = stopwords.words('english')
 
-# check for repeats - need to fix on sql side
-
-
-def remove_repeats(headlines):
-    text_no_repeats = []
-    for sent in headlines:
-        if sent not in text_no_repeats:
-            text_no_repeats.append(sent)
-    return (text_no_repeats)
-
-
 def clean_text(text, ):
 
     punc = []
@@ -62,9 +51,15 @@ def clean_text(text, ):
 
 
 def clean_text_list(text_list):
-    text_list = remove_repeats(text_list)
     return list(map(lambda text: clean_text(text), text_list))
 
+
+def text_vectorizer(text_list: list) -> pd.DataFrame:
+    text_cleaned = clean_text_list(text_list)
+
+    cv = CountVectorizer()
+    array = cv.fit_transform(text_cleaned)
+    return pd.DataFrame(array.toarray())
 
 def knn_plot(text_array):
     neigh = NearestNeighbors(n_neighbors=2)
@@ -79,15 +74,6 @@ def knn_plot(text_array):
     plt.xlabel('Data Points - sorted by Distance', fontsize=12)
     plt.ylabel('Epsilon', fontsize=12)
     plt.show()
-
-
-def text_vectorizer(text_list):
-    text = remove_repeats(text_list)
-    text_cleaned = clean_text_list(text_list)
-
-    cv = CountVectorizer()
-    x = cv.fit_transform(text_cleaned)
-    return x.toarray(), text
 
 
 def fit_dbscan_text(text_array, text, ep=1, min_s=2):
