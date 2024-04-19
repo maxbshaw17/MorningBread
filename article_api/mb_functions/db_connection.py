@@ -7,7 +7,7 @@ import pandas as pd
 
 class DB_Connection:
 
-    def __init__(self, host, user, password, port, database):
+    def __init__(self, host: str, user: str, password: str, port: int, database: str) -> None:
         self.articles_db = mysql.connector.connect(
             host=host,
             user=user,
@@ -18,6 +18,20 @@ class DB_Connection:
 
         self.mycursor = self.articles_db.cursor()
 
+    def get_row_count(self, table: str) -> int:
+        """Gets the total row count of the target table\n
+        table: target table in SQL database"""
+        
+        row_count = 0
+        insert_sql = f"SELECT COUNT(*) AS row_count FROM {table};"
+        try:
+            self.mycursor.execute(insert_sql)
+            
+        except Exception as error:
+            print(f"error grabbing row count from {table}")
+        
+        return self.mycursor.fetchone()[0]
+        
     def insert_into_table(self, table: str, dataframe: pd.DataFrame, column_relationships: dict = {}) -> int:
         """Inserts a dataframe into an SQL table\n
         table: target table in SQL database\n
@@ -61,7 +75,7 @@ class DB_Connection:
         try:
             self.mycursor.executemany(insert_sql, values)
             self.articles_db.commit()
-            print(f'inserted {self.mycursor.rowcount} rows to "{table}"')
+            print(f'inserted {self.mycursor.rowcount} rows to "{table}", {self.get_row_count(table)} total rows')
         except Exception as error:
             self.articles_db.rollback()
             print(f'error inserting into "{table}": {error}')
@@ -78,7 +92,7 @@ class DB_Connection:
             try:
                 self.mycursor.execute(f"DELETE FROM {table}")
                 self.articles_db.commit()
-                print(f'deleted {self.mycursor.rowcount} rows from "{table}"')
+                print(f'deleted all ({self.mycursor.rowcount}) rows from "{table}"')
             except Exception as error:
                 self.articles_db.rollback()
                 print(f'error deleting from "{table}": {error}')
@@ -93,7 +107,7 @@ class DB_Connection:
             try:
                 self.mycursor.execute(insert_sql)
                 self.articles_db.commit()
-                print(f'deleted {self.mycursor.rowcount} rows from "{table}"')
+                print(f'deleted {self.mycursor.rowcount} rows older than {days} days from "{table}", {self.get_row_count(table)} total rows')
             except Exception as error:
                 self.articles_db.rollback()
                 print(f'error deleting from "{table}": {error}')
@@ -111,10 +125,10 @@ class DB_Connection:
         try:
             self.mycursor.execute(insert_sql)
             self.articles_db.commit()
-            print(f'deleted {self.mycursor.rowcount} duplicate rows from "{table}"')
+            print(f'deleted {self.mycursor.rowcount} duplicate rows from "{table}", {self.get_row_count(table)} total rows')
         except Exception as error:
             self.articles_db.rollback()
-            print(f'error deleting from "{table}": {error}')
+            print(f'error deleting duplicates from "{table}": {error}')
         finally:
             return self.mycursor.rowcount
 

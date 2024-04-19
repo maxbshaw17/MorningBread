@@ -54,7 +54,7 @@ def clean_text_list(text_list):
     return list(map(lambda text: clean_text(text), text_list))
 
 
-def text_vectorizer(text_list: list) -> pd.DataFrame:
+def text_vectorizer(text_list: pd.DataFrame) -> pd.DataFrame:
     text_cleaned = clean_text_list(text_list)
 
     cv = CountVectorizer()

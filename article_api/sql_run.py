@@ -12,12 +12,11 @@ connection = DB_Connection(
     database="morningbread"
 )
 
-# upload new articles and remove old ones
+# upload new articles and remove old ones and duplicates
 articles_df = scrape_all()
+
 connection.insert_into_table(table = "articles", dataframe = articles_df)
 connection.delete_from_table(table = "articles", days=1.5)
-
-# remove duplicate articles
 connection.delete_dupes_from_table(table = "articles", columns = ['headline', 'source'])
 
 # pull headlines and vectorize
