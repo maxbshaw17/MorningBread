@@ -4,53 +4,48 @@ from sklearn.neighbors import NearestNeighbors
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import re
 import string
-from nltk.tokenize import word_tokenize, sent_tokenize
+import nltk
 from nltk.corpus import stopwords
-from nltk.stem import PorterStemmer
 from openai import OpenAI
 
-default_stemmer = PorterStemmer()
-# or any other list of your choice
-default_stopwords = stopwords.words('english')
 
-def clean_text(text, ):
+def clean_sentence(sent: str):
+    def preprocess_text(text):
+        # convert text to lowecase
+        text = text.lower()
+        
+        # remove special chars and digits using regex
+        text = re.sub(r'\d+', '', text) # remove digits
+        text = re.sub(r'[^\w\s]', '', text) # remove all special characters
+        
+        # tokenize text
+        tokens = nltk.word_tokenize(text)
+        
+        return tokens
+    
+    def remove_stopwords(tokens):
+        stop_words = set(stopwords.words('english'))
+        filtered_tokens = [word for word in tokens if word not in stop_words]
+        
+        return filtered_tokens
+    
+    def perfrom_lemmatization(tokens):
+        lemmatizer = nltk.stem.WordNetLemmatizer()
+        lemmatized_tokens = [lemmatizer.lemmatize(token) for token in tokens]
+        
+        return lemmatized_tokens
+    
+    tokens = preprocess_text(sent)
+    filtered_tokens = remove_stopwords(tokens)
+    lemmmatized_tokens = perfrom_lemmatization(filtered_tokens)
+    clean_sent = ' '.join(lemmmatized_tokens)
 
-    punc = []
-    for i in string.punctuation:
-        punc.append(i)
-    punc.extend(['’', '‘'])
-
-    def tokenize_text(text):
-        return [w for s in sent_tokenize(text) for w in word_tokenize(s)]
-
-    def remove_special_characters(text, characters=punc):
-        letters = list(map(lambda x: x, text))
-        return_letters = []
-        for letter in letters:
-            if letter not in characters:
-                return_letters.append(letter)
-        return ''.join(return_letters)
-
-    def stem_text(text, stemmer=default_stemmer):
-        tokens = tokenize_text(text)
-        return ' '.join([stemmer.stem(t) for t in tokens])
-
-    def remove_stopwords(text, stop_words=default_stopwords):
-        tokens = [w for w in tokenize_text(text) if w not in stop_words]
-        return ' '.join(tokens)
-
-    text = text.strip(' ')  # strip whitespaces
-    text = text.lower()  # lowercase
-    text = stem_text(text)  # stemming
-    text = remove_special_characters(text)  # remove punctuation and symbols
-    text = remove_stopwords(text)  # remove stopwords
-    text.strip(' ')  # strip whitespaces again?
-
-    return text
+    return clean_sent
 
 
-def clean_text_list(text_list):
+def clean_text_list(text_list: pd.DataFrame) -> pd.DataFrame:
     return list(map(lambda text: clean_text(text), text_list))
 
 
@@ -86,7 +81,7 @@ def fit_dbscan_text(text_array, text, ep=1, min_s=2):
 
 
 def prompt_chat_gpt(prompt_message):
-    client = OpenAI(api_key="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")
+    client = OpenAI(api_key="")
 
     completion = client.chat.completions.create(
         model="gpt-3.5-turbo",

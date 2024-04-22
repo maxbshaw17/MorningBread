@@ -2,12 +2,21 @@
 from mb_functions.db_connection import *
 from mb_functions.news_scraper import *
 from mb_functions.nlp_functions import *
+import os
+from dotenv import load_dotenv
+
+# load the .env file
+load_dotenv()
+
+# access secret keys
+AIVEN_API_KEY = os.getenv('AIVEN_API_KEY')
+CHATGPT_API_KEY = os.getenv('CHATGPT_API_KEY')
 
 # create database connection object
 connection = DB_Connection(
     host="mysql-2ed0e70f-morningbread.a.aivencloud.com",
     user="avnadmin",
-    password="AVNS_-1y1cgAxePfkqdPTpji",
+    password=AIVEN_API_KEY,
     port=25747,
     database="morningbread"
 )
@@ -16,11 +25,12 @@ connection = DB_Connection(
 articles_df = scrape_all()
 
 connection.insert_into_table(table = "articles", dataframe = articles_df)
+
 connection.delete_from_table(table = "articles", days=1.5)
 connection.delete_dupes_from_table(table = "articles", columns = ['headline', 'source'])
 
 # pull headlines and vectorize
-headlines = connection.get_all_headlines()
+headlines = connection.read_table(table = "articles")
 array, sents = text_vectorizer(headlines)
 
 # group using DBSCAN

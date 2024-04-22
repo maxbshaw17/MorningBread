@@ -119,7 +119,7 @@ class DB_Connection:
         
         insert_sql = f"""delete from `{table}` where id not in
                         ( SELECT * FROM 
-                            (select min(id) from `{table}` group by {columns_string}) AS temp_tab
+                            (SELECT MIN(id) FROM `{table}` GROUP BY {columns_string}) AS temp_tab
                         );"""
         
         try:

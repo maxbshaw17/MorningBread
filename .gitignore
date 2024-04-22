@@ -1,4 +1,5 @@
 article_api/__pycache__
-article_api/mb_functions/__pycache__
 article_api/testing.ipynb
 article_api/testing.py
+article_api/mb_functions/__pycache__
+.env
