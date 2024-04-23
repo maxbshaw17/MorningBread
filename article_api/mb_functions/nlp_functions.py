@@ -5,7 +5,6 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import re
-import string
 import nltk
 from nltk import pos_tag
 from nltk.corpus import wordnet
@@ -52,7 +51,10 @@ def clean_sentence(sent: str):
         treebank_pos_tags = pos_tag(tokens)
         wordnet_pos_tags = [(tag_set[0], get_wordnet_pos(tag_set[1]))
                             for tag_set in treebank_pos_tags]
-        lemmatized_tokens = [lemmatizer.lemmatize(tag_set[0], tag_set[1]) if tag_set[1] != '' else lemmatizer.lemmatize(tag_set[0]) for tag_set in wordnet_pos_tags]
+        # lemmatizes with part of speech tag if provided, and without if not
+        lemmatized_tokens = [(lemmatizer.lemmatize(tag_set[0], tag_set[1]) if tag_set[1] != ''
+                             else lemmatizer.lemmatize(tag_set[0]))
+                             for tag_set in wordnet_pos_tags]
 
         return lemmatized_tokens
 
@@ -64,18 +66,18 @@ def clean_sentence(sent: str):
     return clean_sent
 
 
-def clean_sent_list(text_list: pd.DataFrame) -> pd.DataFrame:
+def clean_sent_list(text_list: pd.DataFrame) -> list:
     sent_list = text_list['headline'].tolist()
     cleaned_sents = [clean_sentence(sent) for sent in sent_list]
 
-    return pd.DataFrame({'cleaned_headline': cleaned_sents})
+    return cleaned_sents
 
 
-def text_vectorizer(text_list: pd.DataFrame) -> pd.DataFrame:
+def text_vectorizer(text_list: list):
     cv = CountVectorizer()
-    array = cv.fit_transform(text_list['cleaned_headline'].tolist())
+    matrix = cv.fit_transform(text_list).toarray()
 
-    return pd.DataFrame(array.toarray())
+    return matrix
 
 
 def knn_plot(text_array):
@@ -96,7 +98,7 @@ def knn_plot(text_array):
 def fit_dbscan_text(text_array, text, ep=1, min_s=2):
     dbscan_opt = DBSCAN(eps=ep, min_samples=min_s)
     dbscan_opt.fit(text_array)
-    df_data = {"group": dbscan_opt.labels_, "sent": text}
+    df_data = {"group": dbscan_opt.labels_, "sent": text['headline'].tolist()}
     df = pd.DataFrame(data=df_data)
 
     return df

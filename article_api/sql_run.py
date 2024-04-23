@@ -32,10 +32,10 @@ connection.delete_dupes_from_table(table = "articles", columns = ['headline', 's
 # pull headlines and vectorize
 headlines = connection.read_table(table = "articles", column_relationships = {'headline' : 'headline'})
 cleaned_headlines = clean_sent_list(headlines)
-array, sents = text_vectorizer(cleaned_headlines)
+bag_of_words = text_vectorizer(cleaned_headlines)
 
 # group using DBSCAN
-fit_df = fit_dbscan_text(array, sents, ep=2.75, min_s=2)
+fit_df = fit_dbscan_text(bag_of_words, headlines, ep=2.75, min_s=2)
 
 # clear the grouped articles table and joined table
 connection.delete_from_table(table = "articles_grouped", clear = True)

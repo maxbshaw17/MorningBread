@@ -122,7 +122,7 @@ def scrape_yahoo():
 
     for e in elements:
         headline = e.find('a').get_text()
-        link = f"https://finance.yahoo.com{e.find('a').get('href')}"
+        link = f"/https://finance.yahoo.com{e.find('a').get('href')}"
         publish_time = text_to_datetime(e.find_all('span')[1].get_text())
         source = e.find_all('span')[0].get_text()
 

@@ -132,7 +132,7 @@ class DB_Connection:
         finally:
             return self.mycursor.rowcount
 
-    def join_groups(self):
+    def join_groups(self, target_table):
         insert_sql = """INSERT INTO articles_grouped SELECT headline_groups.*, articles.link, articles.`date`, articles.`source`
         FROM headline_groups 
         JOIN articles ON headline_groups.headline = articles.headline;"""
@@ -182,3 +182,16 @@ class DB_Connection:
             data, columns = df_columns_list)
 
         return df
+
+
+"""INSERT INTO articles_grouped SELECT sorted_table2.group_id, sorted_table1.headline, sorted_table1.link, sorted_table1.date, sorted_table1.source
+FROM (
+    SELECT *
+    FROM articles
+    ORDER BY articles.headline
+) AS sorted_table1
+INNER JOIN (
+    SELECT *
+    FROM headline_groups
+    ORDER BY headline_groups.headline
+) AS sorted_table2 ON sorted_table1.headline = sorted_table2.headline;"""
