@@ -7,6 +7,8 @@ import matplotlib.pyplot as plt
 import re
 import string
 import nltk
+from nltk import pos_tag
+from nltk.corpus import wordnet
 from nltk.corpus import stopwords
 from openai import OpenAI
 
@@ -15,28 +17,45 @@ def clean_sentence(sent: str):
     def preprocess_text(text):
         # convert text to lowecase
         text = text.lower()
-        
+
         # remove special chars and digits using regex
-        text = re.sub(r'\d+', '', text) # remove digits
-        text = re.sub(r'[^\w\s]', '', text) # remove all special characters
-        
+        text = re.sub(r'\d+', '', text)  # remove digits
+        text = re.sub(r'[^\w\s]', '', text)  # remove all special characters
+
         # tokenize text
         tokens = nltk.word_tokenize(text)
-        
+
         return tokens
-    
+
     def remove_stopwords(tokens):
         stop_words = set(stopwords.words('english'))
         filtered_tokens = [word for word in tokens if word not in stop_words]
-        
+
         return filtered_tokens
-    
+
+    def get_wordnet_pos(treebank_tag):
+        # converts treebank tagging convention to wordnet tagging convention
+        if treebank_tag.startswith('J'):
+            return wordnet.ADJ
+        elif treebank_tag.startswith('V'):
+            return wordnet.VERB
+        elif treebank_tag.startswith('N'):
+            return wordnet.NOUN
+        elif treebank_tag.startswith('R'):
+            return wordnet.ADV
+        else:
+            return ''
+
     def perfrom_lemmatization(tokens):
         lemmatizer = nltk.stem.WordNetLemmatizer()
-        lemmatized_tokens = [lemmatizer.lemmatize(token) for token in tokens]
-        
+
+        treebank_pos_tags = pos_tag(tokens)
+        wordnet_pos_tags = [(tag_set[0], get_wordnet_pos(tag_set[1]))
+                            for tag_set in treebank_pos_tags]
+        lemmatized_tokens = [lemmatizer.lemmatize(tag_set[0], tag_set[1]) if tag_set[1] != '' else lemmatizer.lemmatize(tag_set[0]) for tag_set in wordnet_pos_tags]
+
         return lemmatized_tokens
-    
+
     tokens = preprocess_text(sent)
     filtered_tokens = remove_stopwords(tokens)
     lemmmatized_tokens = perfrom_lemmatization(filtered_tokens)
@@ -45,16 +64,19 @@ def clean_sentence(sent: str):
     return clean_sent
 
 
-def clean_text_list(text_list: pd.DataFrame) -> pd.DataFrame:
-    return list(map(lambda text: clean_text(text), text_list))
+def clean_sent_list(text_list: pd.DataFrame) -> pd.DataFrame:
+    sent_list = text_list['headline'].tolist()
+    cleaned_sents = [clean_sentence(sent) for sent in sent_list]
+
+    return pd.DataFrame({'cleaned_headline': cleaned_sents})
 
 
 def text_vectorizer(text_list: pd.DataFrame) -> pd.DataFrame:
-    text_cleaned = clean_text_list(text_list)
-
     cv = CountVectorizer()
-    array = cv.fit_transform(text_cleaned)
+    array = cv.fit_transform(text_list['cleaned_headline'].tolist())
+
     return pd.DataFrame(array.toarray())
+
 
 def knn_plot(text_array):
     neigh = NearestNeighbors(n_neighbors=2)

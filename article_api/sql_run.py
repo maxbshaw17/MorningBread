@@ -30,8 +30,9 @@ connection.delete_from_table(table = "articles", days=1.5)
 connection.delete_dupes_from_table(table = "articles", columns = ['headline', 'source'])
 
 # pull headlines and vectorize
-headlines = connection.read_table(table = "articles")
-array, sents = text_vectorizer(headlines)
+headlines = connection.read_table(table = "articles", column_relationships = {'headline' : 'headline'})
+cleaned_headlines = clean_sent_list(headlines)
+array, sents = text_vectorizer(cleaned_headlines)
 
 # group using DBSCAN
 fit_df = fit_dbscan_text(array, sents, ep=2.75, min_s=2)
