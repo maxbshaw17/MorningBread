@@ -132,14 +132,22 @@ class DB_Connection:
         finally:
             return self.mycursor.rowcount
 
-    def join_groups(self, target_table):
-        insert_sql = """INSERT INTO articles_grouped SELECT headline_groups.*, articles.link, articles.`date`, articles.`source`
-        FROM headline_groups 
-        JOIN articles ON headline_groups.headline = articles.headline;"""
+    def join_groups(self):
+        insert_sql = """
+        INSERT INTO articles_grouped (group_id, headline, link, date, source)
+        SELECT headline_groups.group_id, articles.headline, articles.link, articles.date, articles.source
+            FROM (SELECT articles.*, row_number() OVER (ORDER BY id) AS seqnum
+                FROM articles
+                ) articles JOIN
+                (SELECT headline_groups.*, row_number() OVER (ORDER BY id) AS seqnum
+                FROM headline_groups
+                ) headline_groups
+                ON articles.seqnum = headline_groups.seqnum;"""
 
         try:
             self.mycursor.execute(insert_sql)
             self.articles_db.commit()
+            print(f'inserted {self.mycursor.rowcount} rows to "articles_grouped", {self.get_row_count("articles_grouped")} total rows')
         except Exception as error:
             print(f"error joining tables: {error}")
             self.articles_db.rollback()
@@ -182,16 +190,3 @@ class DB_Connection:
             data, columns = df_columns_list)
 
         return df
-
-
-"""INSERT INTO articles_grouped SELECT sorted_table2.group_id, sorted_table1.headline, sorted_table1.link, sorted_table1.date, sorted_table1.source
-FROM (
-    SELECT *
-    FROM articles
-    ORDER BY articles.headline
-) AS sorted_table1
-INNER JOIN (
-    SELECT *
-    FROM headline_groups
-    ORDER BY headline_groups.headline
-) AS sorted_table2 ON sorted_table1.headline = sorted_table2.headline;"""

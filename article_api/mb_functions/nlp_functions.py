@@ -104,8 +104,8 @@ def fit_dbscan_text(text_array, text, ep=1, min_s=2):
     return df
 
 
-def prompt_chat_gpt(prompt_message):
-    client = OpenAI(api_key="")
+def summarize_sents(prompt_message, API_KEY):
+    client = OpenAI(api_key=API_KEY)
 
     completion = client.chat.completions.create(
         model="gpt-3.5-turbo",
@@ -115,4 +115,30 @@ def prompt_chat_gpt(prompt_message):
         ]
     )
 
-    return completion.choices[0].message
+    return completion.choices[0].message.content
+
+def summarize_group_df(df: pd.DataFrame, API_KEY) -> pd.DataFrame:
+    # group by group_id and create list of groups
+    grouped_df = df.groupby('group_id')
+    groups = list(grouped_df.groups)
+    
+    grouped_sent_lists = [] # list of tuples (group, len([sents]), [sents])
+    
+    for group in groups:
+        if group >= 0: # filter out ungrouped (-1)
+            grouped_sents = []
+            
+            for headline in grouped_df.get_group(group)['headline']:
+                grouped_sents.append(headline)
+            
+            grouped_sent_lists.append((group, len(grouped_sents), grouped_sents))
+            
+    summarized_sents = []
+    for sent_group in grouped_sent_lists:
+        sents = sent_group[2]
+        
+        summary = summarize_sents(f"{sents}", API_KEY)
+        
+        summarized_sents.append((sent_group[0], sent_group[1], summary))
+        
+    return pd.DataFrame(summarized_sents, columns = ['group_id', 'magnitude', 'summarized_headline'])

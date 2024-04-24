@@ -44,33 +44,14 @@ connection.delete_from_table(table = "headline_groups", clear = True)
 # insert generated groupings
 connection.insert_into_table(table = "headline_groups", dataframe = fit_df, column_relationships = {"group": "group_id", "sent":"headline"})
 
-# join groupings table with information table
+# join groupings table with articles in new grouped articles table
 connection.join_groups()
 
 # summarize with chatgpt
-df = connection.get_groups()
+headline_groups = connection.read_table(table = "headline_groups")
 
-grouped_df = df.groupby(by='group_id')
-column_names = list(grouped_df.groups)
-sent_list = []
+summarized_sents = summarize_group_df(headline_groups, CHATGPT_API_KEY)
 
-for group in column_names:
-    if group >= 0:
-        sents = []
-
-        for headline in grouped_df.get_group(group)['headline']:
-            sents.append(headline)
-        sent_list.append((group, sents))
-
-summarized_sents = []
-
-for group_sents in sent_list:
-    sents = group_sents[1]
-
-    summary = prompt_chat_gpt(f"{sents}").content
-
-    summarized_sents.append((group_sents[0], summary))
-
-# insert summaries into table
+# clear and insert new summaries into table
 connection.delete_from_table(table = "summarized_articles", clear = True)
-connection.insert_summaries_db(summarized_sents)
+connection.insert_into_table(table = "summarized_articles", dataframe = summarized_sents)
