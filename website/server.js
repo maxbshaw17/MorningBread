@@ -32,9 +32,19 @@ app.use(session({
   resave: false,
   saveUninitialized: true,
 }));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '../public')));
 
 // Sign up route
+app.get('/signup', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/signup.html'));
+});
+
+// Login route
+app.get('/login', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/login.html'));
+});
+
+// Signup POST route
 app.post('/signup', async (req, res) => {
   const { firstName, lastName, email, password } = req.body;
 
@@ -66,7 +76,7 @@ app.post('/signup', async (req, res) => {
   }
 });
 
-// Login route
+// Login POST route
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
