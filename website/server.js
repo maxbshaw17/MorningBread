@@ -4,6 +4,10 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const session = require('express-session');
 const path = require('path');
+const cors = require('cors');
+
+// Middleware
+app.use(cors());
 
 // Connect to MongoDB
 mongoose.connect('mongodb://localhost/myapp', {
@@ -32,16 +36,16 @@ app.use(session({
   resave: false,
   saveUninitialized: true,
 }));
-app.use(express.static(path.join(__dirname, '../public')));
+app.use(express.static(path.join(__dirname, 'website')));
 
 // Sign up route
 app.get('/signup', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/signup.html'));
+  res.sendFile(path.join(__dirname, 'website/signup.html'));
 });
 
 // Login route
 app.get('/login', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/login.html'));
+  res.sendFile(path.join(__dirname, 'website/profile.html'));
 });
 
 // Signup POST route
