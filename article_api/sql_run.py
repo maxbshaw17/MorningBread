@@ -4,6 +4,9 @@ from mb_functions.news_scraper import *
 from mb_functions.nlp_functions import *
 import os
 from dotenv import load_dotenv
+import time as python_time
+
+start_time = python_time.time()
 
 # load the .env file
 load_dotenv()
@@ -34,8 +37,11 @@ headlines = connection.read_table(table = "articles", column_relationships = {'h
 cleaned_headlines = clean_sent_list(headlines)
 bag_of_words = text_vectorizer(cleaned_headlines)
 
+#---uncomment to display knn plot---
+#knn_plot(bag_of_words)
+
 # group using DBSCAN
-fit_df = fit_dbscan_text(bag_of_words, headlines, ep=2.75, min_s=2)
+fit_df = fit_dbscan_text(bag_of_words, headlines, ep=2.5, min_s=2)
 
 # clear the grouped articles table and joined table
 connection.delete_from_table(table = "articles_grouped", clear = True)
@@ -55,3 +61,5 @@ summarized_sents = summarize_group_df(headline_groups, CHATGPT_API_KEY)
 # clear and insert new summaries into table
 connection.delete_from_table(table = "summarized_articles", clear = True)
 connection.insert_into_table(table = "summarized_articles", dataframe = summarized_sents)
+
+print(f"finished running in {round(python_time.time() - start_time, 3)} seconds")

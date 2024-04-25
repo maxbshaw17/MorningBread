@@ -53,6 +53,7 @@ def text_to_datetime(date_string):
 
 
 def scrape_finviz():
+    start_time = python_time.time()
     # Initialize an empty list to store scraped articles
     article_list = []
 
@@ -83,10 +84,13 @@ def scrape_finviz():
         # creates article object and adds to master list
         article_list.append(Article(text, link, datetime_date, "finviz"))
 
+    print(f"scraped {len(article_list)} articles from finviz in {round(python_time.time() - start_time, 3)} seconds")
+    
     return article_list
 
 
 def scrape_yahoo():
+    start_time = python_time.time()
     article_list = []
     op = webdriver.ChromeOptions()
     op.add_argument('headless')
@@ -127,11 +131,14 @@ def scrape_yahoo():
         source = e.find_all('span')[0].get_text()
 
         article_list.append(Article(headline, link, publish_time, source))
+        
+    print(f"scraped {len(article_list)} articles from yahoo in {round(python_time.time() - start_time, 3)} seconds")
 
     return article_list
 
 
 def scrape_marketwatch_rss():
+    start_time = python_time.time()
     # links to rss feeds
     links = [
         "https://feeds.content.dowjones.io/public/rss/mw_topstories",
@@ -155,6 +162,8 @@ def scrape_marketwatch_rss():
 
             article_list.append(
                 Article(article_headline, article_link, article_date, "marketwatch rss"))
+
+    print(f"scraped {len(article_list)} articles from marketwatch in {round(python_time.time() - start_time, 3)} seconds")
 
     return (article_list)
 

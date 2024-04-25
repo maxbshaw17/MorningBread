@@ -164,7 +164,7 @@ class DB_Connection:
         df_columns_list = []
         
         if column_relationships: # columns are provided
-            sql_columns_string = f"{", ".join(column_relationships.values())}"
+            sql_columns_string = f'{", ".join(column_relationships.values())}'
             df_columns_list = column_relationships.keys()
         else: # no columns provided, grabs all
             sql_columns_string = '*'
