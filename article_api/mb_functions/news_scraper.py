@@ -95,6 +95,8 @@ def scrape_yahoo():
     op = webdriver.ChromeOptions()
     op.add_argument('headless')
     op.add_argument('log-level=3')
+    op.add_argument("--no-sandbox")
+    op.add_argument("--disable-dev-shm-usage")
     driver = webdriver.Chrome(options=op)
     driver.get('https://finance.yahoo.com/topic/latest-news')
 
