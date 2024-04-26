@@ -19,7 +19,7 @@ c = articles_db.cursor()
 def index():
     return "Welcome to MorningBread!"
 
-@app.route('/articles_tickers_api/articles_api', methods=['GET'])
+@app.route('/dynamic_api/articles_api', methods=['GET'])
 def get_articles():
     # Query the database for article headlines
     c.execute("SELECT headline FROM articles")

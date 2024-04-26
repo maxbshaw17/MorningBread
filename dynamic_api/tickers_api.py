@@ -14,7 +14,7 @@ tickers_db = mysql.connector.connect(
 
 c = tickers_db.cursor()
 
-@app.route('/articles_tickers_api/tickers_api', methods=['GET'])
+@app.route('/dynamic_api/tickers_api', methods=['GET'])
 def get_tickers():
     # Query the database for the ticker's symbol, name, change, and percent change
     c.execute("SELECT symbol, name, change, percent_change FROM tickers")
