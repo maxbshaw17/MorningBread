@@ -1,5 +1,5 @@
 console.log("Before fetch");
-fetch('http://127.0.0.1:5000/articles_tickers_api/articles_api')
+fetch('http://127.0.0.1:5000/dynamic_api/articles_api')
   .then(response => {
     if (!response.ok) {
       throw new Error(`HTTP error ${response.status}`);
