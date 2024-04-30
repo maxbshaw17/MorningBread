@@ -1,18 +1,23 @@
 from flask import Flask, jsonify
 import mysql.connector
 from flask_cors import CORS
+from dotenv import load_dotenv
+import os
+
+load_dotenv()  # Load environment variables from .env file
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for the Flask application
 
-# Connect to the MySQL database
+# Connect to the MySQL database using environment variables
 articles_db = mysql.connector.connect(
-    host="mysql-2ed0e70f-morningbread.a.aivencloud.com",
-    user="avnadmin",
-    password="AVNS_-1y1cgAxePfkqdPTpji",
-    port=25747,
-    database="morningbread",
+    host=os.getenv("DB_HOST"),
+    user=os.getenv("DB_USER"),
+    password=os.getenv("DB_PASSWORD"),
+    port=os.getenv("DB_PORT"),
+    database=os.getenv("DB_NAME")
 )
+
 c = articles_db.cursor()
 
 @app.route('/')
@@ -21,8 +26,8 @@ def index():
 
 @app.route('/dynamic_api/articles_api', methods=['GET'])
 def get_articles():
-    # Query the database for article headlines
-    c.execute("SELECT headline FROM articles")
+    # Query the database for article headlines and links
+    c.execute("SELECT headline, link FROM articles_grouped")
     articles = c.fetchall()
     column_names = [column[0] for column in c.description]
 
