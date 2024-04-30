@@ -6,6 +6,26 @@ function updateTime() {
     currentTimeElement.innerText = currentTime.toLocaleTimeString(undefined, options);
 }
 
+// Search function
+const searchInput = document.getElementById('searchInput');
+const articleContainer = document.getElementById('dynamic-articles');
+const markInstance = new Mark(articleContainer);
+
+searchInput.addEventListener('input', () => {
+  const searchTerm = searchInput.value.trim();
+
+  if (searchTerm) {
+    markInstance.unmark();
+    markInstance.mark(searchTerm, {
+      separateWordSearch: false,
+      accuracy: 'exactly',
+      className: 'highlighted'
+    });
+  } else {
+    markInstance.unmark();
+  }
+});
+
 // Call updateTime function nearly immediately
 setInterval(updateTime, 0);
 

@@ -221,6 +221,12 @@ li a {
 
 /* Search bar */ 
 
+.highlighted {
+  background-color: #EEFF75;
+  color: black;
+  border-radius: 6px;
+}
+
 .topnav .search-container {
   position: relative;
   width: 40vh;
