@@ -22,13 +22,12 @@ class DB_Connection:
         """Gets the total row count of the target table\n
         table: target table in SQL database"""
         
-        row_count = 0
         insert_sql = f"SELECT COUNT(*) AS row_count FROM {table};"
         try:
             self.mycursor.execute(insert_sql)
             
         except Exception as error:
-            print(f"error grabbing row count from {table}")
+            print(f"error grabbing row count from {table}: {error}")
         
         return self.mycursor.fetchone()[0]
         
