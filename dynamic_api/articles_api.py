@@ -26,8 +26,12 @@ def index():
 
 @app.route('/dynamic_api/articles_api', methods=['GET'])
 def get_articles():
-    # Query the database for article headlines and links
-    c.execute("SELECT headline, link FROM articles_grouped")
+    # Query the database for summarized headlines and links
+
+    # PROBLEM BELOW
+    c.execute("SELECT summarized_articles.summarized_headline, articles_grouped.link FROM summarized_articles, articles_grouped WHERE summarized_articles.group_id = articles_grouped.group_id")
+    # PROBLEM ABOVE
+    
     articles = c.fetchall()
     column_names = [column[0] for column in c.description]
 

@@ -108,28 +108,23 @@ li a {
 }
 
 .article-link {
-  color:#90a6d0
+  color:#90a6d0;
+  font-size: 18px;
 }
 
 .article-link:hover {
   color:#A5B5D2
 }
 
-.article-link {
-  display: none;
-}
-
 .article-preview {
   display: flex;
   align-items: flex-start;
-  margin-bottom: 20px;
 }
 
 .article-preview img {
   width: 80px;
   height: 80px;
-  object-fit: cover;
-  margin-right: 10px;
+  margin-right: 16px;
 }
 
 .article-summary {

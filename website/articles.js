@@ -30,9 +30,7 @@ fetch('http://127.0.0.1:5000/dynamic_api/articles_api')
         <div class="article-preview">
           <img src="placeholder_image.png" alt="Article Image">
           <div>
-            <p class="article-summary">Summary</p>
             <a href="${article.link}" class="article-link" target="_blank">Original Article</a>
-            <a class="read-more-link">Show Summary</a>
           </div>
         </div>
       `;
@@ -45,9 +43,7 @@ fetch('http://127.0.0.1:5000/dynamic_api/articles_api')
         <div class="article-preview">
           <img src="placeholder_image.png" alt="Article Image">
           <div>
-            <p class="article-summary">Summary</p>
             <a href="${article.link}" class="article-link" target="_blank">Original Article</a>
-            <a class="read-more-link">Show Summary</a>
           </div>
         </div>
       `;
@@ -62,23 +58,6 @@ fetch('http://127.0.0.1:5000/dynamic_api/articles_api')
     // Append the sections to the container
     dynamicArticlesContainer.appendChild(featuredArticleSection);
     dynamicArticlesContainer.appendChild(secondaryArticlesSection);
-
-    // Add click event listener to each "Read More" link
-    const readMoreLinks = document.querySelectorAll('.read-more-link');
-    readMoreLinks.forEach(link => {
-      const articleSummary = link.parentNode.querySelector('.article-summary');
-      const articleLink = link.parentNode.querySelector('.article-link');
-
-      // Initially, set the summary and link to be hidden
-      articleSummary.style.display = 'none';
-      articleLink.style.display = 'none';
-
-      link.addEventListener('click', () => {
-        articleSummary.style.display = articleSummary.style.display === 'none' ? 'block' : 'none';
-        articleLink.style.display = articleLink.style.display === 'none' ? 'inline' : 'none';
-        link.textContent = articleSummary.style.display === 'none' ? 'Show Summary' : 'Hide Summary';
-      });
-    });
   })
   .catch(error => {
     console.error('Error fetching articles:', error);
