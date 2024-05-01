@@ -89,6 +89,7 @@ def knn_plot(text_array):
 
     plt.figure(figsize=(7, 4))
     plt.plot(distances)
+    plt.grid()
     plt.title('K-Distance - Check where it bends', fontsize=16)
     plt.xlabel('Data Points - sorted by Distance', fontsize=12)
     plt.ylabel('Epsilon', fontsize=12)

@@ -14,6 +14,8 @@ load_dotenv()
 # access secret keys
 AIVEN_API_KEY = os.getenv('AIVEN_API_KEY')
 CHATGPT_API_KEY = os.getenv('CHATGPT_API_KEY')
+EPSILON = os.getenv('EPSILON')
+MIN_S = os.getenv('MIN_S')
 
 # create database connection object
 connection = DB_Connection(
@@ -41,7 +43,7 @@ bag_of_words = text_vectorizer(cleaned_headlines)
 #knn_plot(bag_of_words)
 
 # group using DBSCAN
-fit_df = fit_dbscan_text(bag_of_words, headlines, ep=2.5, min_s=2)
+fit_df = fit_dbscan_text(bag_of_words, headlines, ep=float(EPSILON), min_s=int(MIN_S))
 
 # clear the grouped articles table and joined table
 connection.delete_from_table(table = "articles_grouped", clear = True)
