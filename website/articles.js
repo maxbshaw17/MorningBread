@@ -18,8 +18,16 @@ fetch('http://127.0.0.1:5000/dynamic_api/articles_api')
     const secondaryArticlesSection = document.createElement('div');
     secondaryArticlesSection.classList.add('secondary-articles-section');
 
+    const displayedArticles = new Set(); // Set to keep track of displayed articles
+
     articles.forEach((article, index) => {
-      // Create the featured article element
+      // Check if the article has already been displayed
+      if (displayedArticles.has(article.summarized_headline)) {
+        return; // Skip this article
+      }
+
+      displayedArticles.add(article.summarized_headline); // Add the article to the set
+
       const featuredArticleElement = document.createElement('div');
       featuredArticleElement.classList.add('featured-article');
       if (index === 0) {
