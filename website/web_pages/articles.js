@@ -36,7 +36,7 @@ fetch('http://127.0.0.1:5000/dynamic_api/articles_api')
       featuredArticleElement.innerHTML = `
         <h1>${article.summarized_headline}</h1>
         <div class="article-preview">
-          <img src="placeholder_image.png" alt="Article Image">
+          <img src="morningbread.png" alt="Article Image">
           <div>
             <a href="${article.link}" class="article-link" target="_blank">Original Article</a>
           </div>
@@ -49,7 +49,7 @@ fetch('http://127.0.0.1:5000/dynamic_api/articles_api')
       secondaryArticleElement.innerHTML = `
         <h1>${article.summarized_headline}</h1>
         <div class="article-preview">
-          <img src="placeholder_image.png" alt="Article Image">
+          <img src="morningbread.png" alt="Article Image">
           <div>
             <a href="${article.link}" class="article-link" target="_blank">Original Article</a>
           </div>

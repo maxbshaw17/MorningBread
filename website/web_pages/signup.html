@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="icon" href="placeholder_image.png">
-        <title>MorningBread | Profile</title>
+        <link rel="icon" href="morningbread.png">
+        <title>MorningBread | Sign Up</title>
         <link href="style.css" type="text/css" rel="stylesheet">
     </head>
     <body>
@@ -14,22 +14,34 @@
             <script src="script.js"></script>
       </ul>
     </header>
-      <div class = 'card'>
-        <img class = 'logo' src = 'placeholder_image.png' />
-        <h2>Welcome Back</h2>
-        <form class = 'form'>
+    <div class = 'card_signup'>
+        <img class = 'logo' src = 'morningbread.png' />
+        <h2>Create an Account</h2>
+        <form class = 'form_signup'>
+            <div class="name-fields">
+                <div class="input-container">
+                  <input type="text" id="firstName" name="firstName" placeholder="First Name" required>
+                </div>
+                <div class="input-container">
+                  <input type="text" id="lastName" name="lastName" placeholder="Last Name" required>
+                </div>
+              </div>
             <input 
                 type = "email"
-                placeholder = "Username" />
+                placeholder = "Email" />
             <input 
                 type = "password"
                 placeholder = "Password" />
                 <i class="far fa-eye" id="togglePassword" style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;"></i>
-            <button>Sign In</button>
+            <input 
+                type = "password"
+                id = "confirmPassword"
+                placeholder="Confirm Password">
+            <button>Create Account</button>
         </form>
-        <div class = 'profile_footer'>
-            Need an account? Sign up
-            <a href='signup.html'>here</a>
+        <div class = 'signup_footer'>
+            Already have an account? Sign in
+            <a href='profile.html'>here</a>
         </div>
     </div>
     <footer>
