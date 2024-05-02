@@ -35,6 +35,7 @@ def get_articles():
     articles = c.fetchall()
     column_names = [column[0] for column in c.description]
 
+
     # Convert the articles to a list of dictionaries
     article_list = [dict(zip(column_names, row)) for row in articles]
 

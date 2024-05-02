@@ -26,7 +26,7 @@ fetch('http://127.0.0.1:5000/dynamic_api/articles_api')
         featuredArticleElement.classList.add('first-article');
       }
       featuredArticleElement.innerHTML = `
-        <h1>${article.headline}</h1>
+        <h1>${article.summarized_headline}</h1>
         <div class="article-preview">
           <img src="placeholder_image.png" alt="Article Image">
           <div>
@@ -39,7 +39,7 @@ fetch('http://127.0.0.1:5000/dynamic_api/articles_api')
       const secondaryArticleElement = document.createElement('div');
       secondaryArticleElement.classList.add('secondary-articles');
       secondaryArticleElement.innerHTML = `
-        <h1>${article.headline}</h1>
+        <h1>${article.summarized_headline}</h1>
         <div class="article-preview">
           <img src="placeholder_image.png" alt="Article Image">
           <div>
