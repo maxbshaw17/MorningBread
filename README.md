@@ -8,18 +8,14 @@ Utilizing a web scraping tool for financial website articles to find the general
 
 ## Getting Started
 
-### Dependencies
+### Built With
 
-* Windows 10 or 11
-* To be determined
-
-### Installing
-
-* To be determined
-
-### Executing program
-
-* To be determined
+> - [![Python](https://img.shields.io/badge/python-4381B2?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+> - [![HTML5](https://img.shields.io/badge/html5-e54d26?style=for-the-badge&logo=html5&logoColor=white)](https://www.w3.org/html/)
+> - [![CSS3](https://img.shields.io/badge/css3-2a65f1?style=for-the-badge&logo=css3&logoColor=white)](https://www.w3.org/Style/CSS/)
+> - [![JavaScript](https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E)](https://www.javascript.com/)
+>   - [![Node.js](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/en)
+> - [![MySQL](https://img.shields.io/badge/mysql-00618b?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/)
 
 ## Authors
 
