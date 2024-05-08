@@ -12,64 +12,53 @@ fetch('http://127.0.0.1:5000/dynamic_api/articles_api')
     console.log("Fetched articles:", articles);
     const dynamicArticlesContainer = document.getElementById('dynamic-articles');
 
-    // Create the featured article section
-    const featuredArticleSection = document.createElement('div');
-    featuredArticleSection.classList.add('featured-article-section');
-
-    // Create the secondary articles section
-    const secondaryArticlesSection = document.createElement('div');
-    secondaryArticlesSection.classList.add('secondary-articles-section');
-
-    const displayedArticles = new Set();
-
-    articles.forEach((article, index) => {
-      // Check if the article has already been displayed
-      if (displayedArticles.has(article.summarized_headline)) {
-        return; // Skip this article
+    // Group articles by group_id
+    const groupedArticles = {};
+    articles.forEach(article => {
+      const groupId = article.group_id;
+      if (!groupedArticles[groupId]) {
+        groupedArticles[groupId] = [];
       }
-      displayedArticles.add(article.summarized_headline);
-
-      console.log('Creating featured article element:', article.summarized_headline);
-      const featuredArticleElement = document.createElement('div');
-      featuredArticleElement.classList.add('featured-article');
-      if (index === 0) {
-        featuredArticleElement.classList.add('first-article');
-      }
-      featuredArticleElement.innerHTML = `
-        <h1>${article.summarized_headline}</h1>
-        <div class="article-preview">
-          <img src="web_pages/morningbread.png" alt="Article Image">
-          <div>
-            <a href="${article.link}" class="article-link" target="_blank">Original Article</a>
-          </div>
-        </div>
-      `;
-
-      console.log('Creating secondary article element:', article.summarized_headline);
-      const secondaryArticleElement = document.createElement('div');
-      secondaryArticleElement.classList.add('secondary-articles');
-      secondaryArticleElement.innerHTML = `
-        <h1>${article.summarized_headline}</h1>
-        <div class="article-preview">
-          <img src="web_pages/morningbread.png" alt="Article Image">
-          <div>
-            <a href="${article.link}" class="article-link" target="_blank">Original Article</a>
-          </div>
-        </div>
-      `;
-
-      // Append the featured article to the featured article section
-      featuredArticleSection.appendChild(featuredArticleElement);
-
-      // Append the secondary article to the secondary articles section
-      secondaryArticlesSection.appendChild(secondaryArticleElement);
+      groupedArticles[groupId].push(article);
     });
 
-    // Append the sections to the container
-    console.log('Appending featured article section to container');
-    dynamicArticlesContainer.appendChild(featuredArticleSection);
-    console.log('Appending secondary article section to container');
-    dynamicArticlesContainer.appendChild(secondaryArticlesSection);
+    // Create article sections for each group
+    Object.entries(groupedArticles).forEach(([groupId, groupArticles]) => {
+      const articleSection = document.createElement('div');
+      articleSection.classList.add('article-section');
+
+      // Group articles by headline within each group
+      const headlineGroups = {};
+      groupArticles.forEach(article => {
+        const headline = article.summarized_headline;
+        if (!headlineGroups[headline]) {
+          headlineGroups[headline] = [];
+        }
+        headlineGroups[headline].push(article);
+      });
+
+      // Create article elements for each headline group
+      Object.entries(headlineGroups).forEach(([headline, articlesWithSameHeadline]) => {
+        const articleElement = document.createElement('div');
+        articleElement.classList.add('featured-article');
+        articleElement.innerHTML = `
+          <h1>${headline} <span class="magnitude">(${articlesWithSameHeadline[0].magnitude})</span></h1>
+          <div class="article-preview">
+            <img src="morningbread.png" alt="Article Image">
+            <div>
+              <p class="article-summary" style="display: none;">Summary</p>
+              <div class="links-container">
+                ${articlesWithSameHeadline.map(article => `<a href="${article.link}" target="_blank">Link</a>`).join('')}
+              </div>
+            </div>
+          </div>
+        `;
+
+        articleSection.appendChild(articleElement);
+      });
+
+      dynamicArticlesContainer.appendChild(articleSection);
+    });
   })
   .catch(error => {
     console.error('Error fetching articles:', error);
