@@ -1,6 +1,7 @@
 console.log("Before fetch");
 fetch('http://127.0.0.1:5000/dynamic_api/articles_api')
   .then(response => {
+    console.log(`Response status: ${response.status}`);
     if (!response.ok) {
       throw new Error(`HTTP error ${response.status}`);
     }
@@ -8,6 +9,7 @@ fetch('http://127.0.0.1:5000/dynamic_api/articles_api')
   })
   .then(articles => {
     console.log("After fetch");
+    console.log("Fetched articles:", articles);
     const dynamicArticlesContainer = document.getElementById('dynamic-articles');
 
     // Create the featured article section
@@ -18,16 +20,16 @@ fetch('http://127.0.0.1:5000/dynamic_api/articles_api')
     const secondaryArticlesSection = document.createElement('div');
     secondaryArticlesSection.classList.add('secondary-articles-section');
 
-    const displayedArticles = new Set(); // Set to keep track of displayed articles
+    const displayedArticles = new Set();
 
     articles.forEach((article, index) => {
       // Check if the article has already been displayed
       if (displayedArticles.has(article.summarized_headline)) {
         return; // Skip this article
       }
+      displayedArticles.add(article.summarized_headline);
 
-      displayedArticles.add(article.summarized_headline); // Add the article to the set
-
+      console.log('Creating featured article element:', article.summarized_headline);
       const featuredArticleElement = document.createElement('div');
       featuredArticleElement.classList.add('featured-article');
       if (index === 0) {
@@ -36,20 +38,20 @@ fetch('http://127.0.0.1:5000/dynamic_api/articles_api')
       featuredArticleElement.innerHTML = `
         <h1>${article.summarized_headline}</h1>
         <div class="article-preview">
-          <img src="morningbread.png" alt="Article Image">
+          <img src="web_pages/morningbread.png" alt="Article Image">
           <div>
             <a href="${article.link}" class="article-link" target="_blank">Original Article</a>
           </div>
         </div>
       `;
 
-      // Create the secondary articles element
+      console.log('Creating secondary article element:', article.summarized_headline);
       const secondaryArticleElement = document.createElement('div');
       secondaryArticleElement.classList.add('secondary-articles');
       secondaryArticleElement.innerHTML = `
         <h1>${article.summarized_headline}</h1>
         <div class="article-preview">
-          <img src="morningbread.png" alt="Article Image">
+          <img src="web_pages/morningbread.png" alt="Article Image">
           <div>
             <a href="${article.link}" class="article-link" target="_blank">Original Article</a>
           </div>
@@ -64,7 +66,9 @@ fetch('http://127.0.0.1:5000/dynamic_api/articles_api')
     });
 
     // Append the sections to the container
+    console.log('Appending featured article section to container');
     dynamicArticlesContainer.appendChild(featuredArticleSection);
+    console.log('Appending secondary article section to container');
     dynamicArticlesContainer.appendChild(secondaryArticlesSection);
   })
   .catch(error => {
