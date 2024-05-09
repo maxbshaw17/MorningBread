@@ -127,17 +127,19 @@ li a {
   margin-right: 16px;
 }
 
-.article-summary {
-  display: none;
+.orange-link {
+  color: orange;
+  text-decoration: none; /* Remove underline */
+  font-size: 20px;
 }
 
-.read-more-link {
-  color: #FFB061;
-  cursor: pointer;
+.orange-link:hover {
+  color: rgb(255, 199, 95);
+  transition: 0.3s;
 }
 
-.read-more-link:hover {
-  color: #fec78f;
+.orange-link:active {
+  text-decoration:underline;
 }
 
 /* Tickers */
