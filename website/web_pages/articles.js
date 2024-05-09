@@ -2,6 +2,7 @@ console.log("Before fetch");
 fetch('http://127.0.0.1:5000/dynamic_api/articles_api')
   .then(response => {
     console.log(`Response status: ${response.status}`);
+    console.log(`Response status: ${response.status}`);
     if (!response.ok) {
       throw new Error(`HTTP error ${response.status}`);
     }
@@ -9,6 +10,7 @@ fetch('http://127.0.0.1:5000/dynamic_api/articles_api')
   })
   .then(articles => {
     console.log("After fetch");
+    console.log("Fetched articles:", articles);
     console.log("Fetched articles:", articles);
     const dynamicArticlesContainer = document.getElementById('dynamic-articles');
     // Group articles by group_id
