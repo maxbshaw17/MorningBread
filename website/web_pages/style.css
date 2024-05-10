@@ -2,6 +2,7 @@ body {
   background: #1E1E23;
   margin: 0;
   font-family: 'Franklin Gothic Medium', sans-serif;
+  padding-bottom: 8vh;
 }
 
 .navigation {
@@ -336,8 +337,9 @@ header {
   width: 25%; 
   align-items: center;
   margin: 0 auto;
+  margin-bottom: 4vh;
   padding: 170px 30px;
-  padding-bottom: 10vh;
+  padding-bottom: 4vh;
   border-radius: 24px;
   text-align: center;
   box-shadow: 0 100px 100px
@@ -704,7 +706,7 @@ footer > h3 {
   right: 0;
   bottom: 0;
   padding: 0px 32px;
-  position: absolute;
+  position: fixed;
 }
 
 h3 a {
@@ -734,6 +736,7 @@ h3 a {
   height: 400px;
   gap: 16px;
   transition: 0.3s;
+  margin-bottom: 7vh;
 }
 
 .accordian:hover {
@@ -914,13 +917,19 @@ h3 a {
 }
 
 .circle-top-right {
-  position: fixed;
+  position: absolute;
   top: 15vh; 
   right: 0;
-  margin-right: -10vh;
   width: 200px;
-  height: 200px;
-  border-radius: 50%;
+  height: 150px;
+  border-bottom-left-radius: 100px;
+  border-bottom-right-radius: 100px;
   background-color: #90a6d0;
   z-index: 0;
+}
+
+/* Dynamic link styling */
+
+.links-column a {
+  margin-right: 15px;
 }

@@ -71,21 +71,27 @@
     };
         emailjs.init(emailjsConfig.userId);
 
-    function onSubmitForm() {
-        const firstName = document.querySelector('input[name="first_name"]').value;
-        const lastName = document.querySelector('input[name="last_name"]').value || 'N/A';
-        const email = document.querySelector('input[name="email"]').value;
-        const message = document.querySelector('textarea[name="message"]').value;
+function onSubmitForm() {
+    const firstName = document.querySelector('input[name="first_name"]').value.trim();
+    const lastName = document.querySelector('input[name="last_name"]').value.trim() || 'N/A';
+    const email = document.querySelector('input[name="email"]').value.trim();
+    const message = document.querySelector('textarea[name="message"]').value.trim();
 
-        // Prepare the template parameters
-        const templateParams = {
+    // Check if required fields are empty
+    if (!firstName || !email || !message) {
+        alert('Please fill in all required fields.');
+        return;
+    }
+
+    // Prepare the template parameters
+    const templateParams = {
         from_name: `${firstName} ${lastName}`,
         email: email,
         message: message,
-        };
+    };
 
-        // Send the email using Email.js
-        emailjs.send("service_7tchd16", "template_opam4d4", templateParams)
+    // Send the email using Email.js
+    emailjs.send("service_7tchd16", "template_opam4d4", templateParams)
         .then(function(response) {
             console.log("Email sent successfully:", response);
             showThankYouMessage();
@@ -95,7 +101,7 @@
         });
 
         // Set the flag indicating that the form has been submitted
-  }
+}
 
     function showThankYouMessage() {
         // Show the pop-up
