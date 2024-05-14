@@ -134,6 +134,9 @@ def scrape_yahoo():
 
         article_list.append(Article(headline, link, publish_time, source))
         
+    driver.close()
+    driver.quit()
+        
     print(f"scraped {len(article_list)} articles from yahoo in {round(python_time.time() - start_time, 3)} seconds")
 
     return article_list
