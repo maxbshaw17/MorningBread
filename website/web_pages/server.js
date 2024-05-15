@@ -5,9 +5,12 @@ const bcrypt = require('bcrypt');
 const session = require('express-session');
 const path = require('path');
 const cors = require('cors');
+const csrf = require('csurf');
+const helmet = require('helmet');
 
 // Middleware
 app.use(cors());
+app.use(helmet());
 
 // Connect to MongoDB
 mongoose.connect('mongodb://localhost/myapp', {
@@ -21,7 +24,7 @@ mongoose.connect('mongodb://localhost/myapp', {
 const userSchema = new mongoose.Schema({
   firstName: String,
   lastName: String,
-  email: String,
+  email: { type: String, unique: true },
   password: String,
 });
 
@@ -35,17 +38,27 @@ app.use(session({
   secret: 'your-secret-key',
   resave: false,
   saveUninitialized: true,
+  cookie: {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
+    maxAge: 1000 * 60 * 60 * 24, // 1 day
+  },
 }));
-app.use(express.static(path.join(__dirname, 'website')));
+
+const csrfProtection = csrf({ cookie: true });
+app.use(csrfProtection);
+
+// Serve static files from the parent directory of web_pages
+app.use(express.static(path.join(__dirname, '..')));
 
 // Sign up route
 app.get('/signup', (req, res) => {
-  res.sendFile(path.join(__dirname, 'website/signup.html'));
+  res.sendFile(path.join(__dirname, 'signup.html'));
 });
 
 // Login route
 app.get('/login', (req, res) => {
-  res.sendFile(path.join(__dirname, 'website/profile.html'));
+  res.sendFile(path.join(__dirname, 'login.html'));
 });
 
 // Signup POST route
@@ -75,7 +88,7 @@ app.post('/signup', async (req, res) => {
 
     res.status(201).json({ message: 'User created successfully' });
   } catch (err) {
-    console.error(err);
+    console.error('Error creating user:', err);
     res.status(500).json({ message: 'Internal server error' });
   }
 });
@@ -102,7 +115,7 @@ app.post('/login', async (req, res) => {
 
     res.status(200).json({ message: 'Login successful' });
   } catch (err) {
-    console.error(err);
+    console.error('Error logging in:', err);
     res.status(500).json({ message: 'Internal server error' });
   }
 });
