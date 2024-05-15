@@ -75,7 +75,7 @@ def scrape_finviz():
     for article in articles:
         # retrieve headline and link from soup object
         text = article.find("td", class_="news_link-cell").get_text()
-        link = article.find("a", class_="tab-link").get('href')
+        link = article.find("a", class_="nn-tab-link").get('href')
 
         # retrieve date/time - accounts for possibility time and date
         datetime_date = text_to_datetime(article.find(
