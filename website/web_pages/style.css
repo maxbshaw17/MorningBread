@@ -88,7 +88,7 @@ li a {
   background-color: #1E1E23;
   padding-top: 20px;
   padding-left: 20px;
-  width: 81.5%;
+  width: 85%;
 }
 
 .featured-article,
@@ -148,15 +148,13 @@ li a {
 .ticker-container {
   position: absolute;
   color: #2a2a30;
-  right: 0;
+  right: 10vh;
+  top: 30vh;
   width: 30vh;
-  height: 100vh;
+  height: 22vh;
   background-color: #c6c6c6;
-  border-left: 6px solid #ddd;
-  border-right: 6px solid #ddd;
-  border-bottom: 6px solid #ddd;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
+  border: 6px solid #ddd;
+  border-radius: 10px;
   display: flex;
   flex-direction: column; 
   justify-content: flex-start; 
@@ -164,10 +162,27 @@ li a {
   overflow: hidden;
 }
 
-.ticker-wrapper {
-  flex: 1;
+#nyse-status {
+  font-size: 3.25vh;
+  padding: 10px;
   width: 100%;
-  overflow: hidden;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#nyse-status .status-text {
+  margin-top: 10px;
+  font-size: 4vh;
+}
+
+#nyse-status .status-text.open {
+  color: green;
+}
+
+#nyse-status .status-text.closed {
+  color: red;
 }
 
 .time-display {
@@ -178,43 +193,6 @@ li a {
   text-align: center;
   font-weight: bold;
   margin-bottom: auto;
-}
-
-.ticker {
-  animation: scroll 10s linear infinite;
-  padding-top: 300%;
-}
-
-.ticker-item {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 10px;
-}
-
-.change.negative {
-  color: rgb(255, 67, 67);
-}
-
-.change.positive {
-  color: rgb(20, 134, 20);
-}
-
-.change-percent.negative {
-  color: rgb(255, 67, 67);
-}
-
-.change-percent.positive {
-  color: rgb(20, 134, 20);
-}
-
-@keyframes scroll {
-  0% {
-    transform: translateY(0);
-  }
-  100% {
-    transform: translateY(-100%);
-  }
 }
 
 /* Search bar */ 
