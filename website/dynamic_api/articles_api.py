@@ -11,11 +11,11 @@ CORS(app)  # Enable CORS for the Flask application
 
 # Connect to the MySQL database using environment variables
 articles_db = mysql.connector.connect(
-    host="mysql-2ed0e70f-morningbread.a.aivencloud.com",
-    user="avnadmin",
-    password=os.getenv("AIVEN_API_KEY"),
-    port=25747,
-    database="morningbread"
+    host=os.getenv("DB_HOST"),
+    user=os.getenv("DB_USER"),
+    password=os.getenv("DB_PASSWORD"),
+    port=os.getenv("DB_PORT"),
+    database=os.getenv("DB_NAME")
 )
 
 c = articles_db.cursor()
