@@ -75,7 +75,7 @@ def scrape_finviz():
     for article in articles:
         # retrieve headline and link from soup object
         text = article.find("td", class_="news_link-cell").get_text()
-        link = article.find("a", class_="tab-link").get('href')
+        link = article.find("a", class_="nn-tab-link").get('href')
 
         # retrieve date/time - accounts for possibility time and date
         datetime_date = text_to_datetime(article.find(
@@ -133,6 +133,9 @@ def scrape_yahoo():
         source = e.find_all('span')[0].get_text()
 
         article_list.append(Article(headline, link, publish_time, source))
+        
+    driver.close()
+    driver.quit()
         
     print(f"scraped {len(article_list)} articles from yahoo in {round(python_time.time() - start_time, 3)} seconds")
 

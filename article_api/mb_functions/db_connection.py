@@ -171,7 +171,8 @@ class DB_Connection:
             try: # tries to grab all column names
                 self.mycursor.execute(f"""SELECT COLUMN_NAME
                                       FROM INFORMATION_SCHEMA.COLUMNS
-                                      WHERE TABLE_NAME='{table}'""")
+                                      WHERE TABLE_NAME='{table}'
+                                      ORDER BY ORDINAL_POSITION ASC""")
                 for column in self.mycursor: # appends columns from returned list
                     df_columns_list.append(column[0]) # for some reason, columns are read in as tuples
             except Exception as error:
