@@ -12,8 +12,11 @@ const helmet = require('helmet');
 app.use(cors());
 app.use(helmet());
 
+// Deprecation
+mongoose.set('strictQuery', false);
+
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost/myapp', {
+mongoose.connect('mongodb://localhost/MorningBread', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
