@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, render_template
 import mysql.connector
 from flask_cors import CORS
 from dotenv import load_dotenv
@@ -22,20 +22,14 @@ c = articles_db.cursor()
 
 @app.route('/')
 def index():
-    return "Welcome to MorningBread!"
-
-@app.route('/dynamic_api/articles_api', methods=['GET'])
-def get_articles():
     # Query the database for summarized headlines, links, and magnitude (ordered by magnitude descending)
-    c.execute("SELECT summarized_articles.summarized_headline, articles_grouped.link, summarized_articles.magnitude FROM summarized_articles, articles_grouped WHERE summarized_articles.group_id = articles_grouped.group_id ORDER BY summarized_articles.magnitude DESC")
-    articles = c.fetchall()
-    column_names = [column[0] for column in c.description]
+    articles = []
+    c.execute("SELECT summarized_articles.summarized_headline summarized_articles.magnitude")
+    for article in c:
+        articles.append({'headline' : article[0], 'magnitude' : article[1]})
+    
 
-
-    # Convert the articles to a list of dictionaries
-    article_list = [dict(zip(column_names, row)) for row in articles]
-
-    return jsonify(article_list)
+    return render_template('index.html', articles = articles)
 
 if __name__ == '__main__':
     app.run(debug=True)

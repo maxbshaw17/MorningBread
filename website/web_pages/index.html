@@ -30,14 +30,19 @@
         <div class="article-section">
             <!-- Dynamically added articles will be added below -->
             <div id="dynamic-articles"></div>
-          </div>
+                {% for article in articles- %}
+                    <li>
+                        <h2>{{ article.headline }}</h2>
+                        <p>{{ article.magnitude }}</p>
+                    </li>
+                {% endfor %}
+            </div>
         <footer>
             <a href='https://github.com/maxbshaw17/MorningBread' target='_blank'>
                 <img src='https://cdn-icons-png.flaticon.com/512/25/25231.png' height="36">
             </a>
             <h3><a href='contact.html' class='active'>Contact Us</a></h3>
         </footer>
-        <script src="articles.js" defer></script>
         <script src="script.js"></script>
     </body>
 </html>
