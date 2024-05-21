@@ -8,20 +8,33 @@ const cors = require('cors');
 const csrf = require('csurf');
 const helmet = require('helmet');
 
-// Middleware
-app.use(cors());
-app.use(helmet());
+// Middleware and CORS Configuration
+const allowedOrigins = ['http://127.0.0.1:3000', 'http://127.0.0.1:3001'];
+app.use(cors({
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps, curl requests)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    } else {
+      return callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true // Allow credentials
+}));
 
 // Deprecation
 mongoose.set('strictQuery', false);
 
-// Connect to MongoDB
-mongoose.connect('mongodb://localhost/MorningBread', {
+mongoose.connect('mongodb://localhost:27017/', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
   .then(() => console.log('MongoDB connected'))
-  .catch(err => console.log(err));
+  .catch(err => {
+    console.error('MongoDB connection error:', err);
+    process.exit(1); // Exit the process if there's an error
+  });
 
 // User schema
 const userSchema = new mongoose.Schema({
@@ -124,6 +137,6 @@ app.post('/login', async (req, res) => {
 });
 
 // Start the server
-app.listen(3000, () => {
-  console.log('Server started on port 3000');
+app.listen(3001, () => {
+  console.log('Server started on port 3001');
 });
