@@ -11,22 +11,30 @@ const helmet = require('helmet');
 // CORS Configuration
 const allowedOrigins = ['http://127.0.0.1:3000', 'http://127.0.0.1:3001'];
 
-app.use(cors({
-  origin: (origin, callback) => {
-    // Allow requests with no origin (like mobile apps, curl requests)
-    if (!origin) return callback(null, true);
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      console.log('CORS middleware called for origin:', origin);
+      // Allow requests with no origin (like mobile apps, curl requests)
+      if (!origin) {
+        console.log('No origin, allowing request');
+        return callback(null, true);
+      }
 
-    // Check if the origin is allowed
-    if (allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    } else {
-      return callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true, // Allow credentials
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow these HTTP methods
-  allowedHeaders: ['Content-Type', 'Authorization'], // Allow these headers
-}));
+      // Check if the origin is allowed
+      if (allowedOrigins.includes(origin)) {
+        console.log('Origin allowed:', origin);
+        return callback(null, true);
+      } else {
+        console.log('Origin not allowed:', origin);
+        return callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true, // Allow credentials
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  })
+);
 
 // Deprecation
 mongoose.set('strictQuery', false);
