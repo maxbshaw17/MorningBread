@@ -8,19 +8,24 @@ const cors = require('cors');
 const csrf = require('csurf');
 const helmet = require('helmet');
 
-// Middleware and CORS Configuration
+// CORS Configuration
 const allowedOrigins = ['http://127.0.0.1:3000', 'http://127.0.0.1:3001'];
+
 app.use(cors({
   origin: (origin, callback) => {
     // Allow requests with no origin (like mobile apps, curl requests)
     if (!origin) return callback(null, true);
+
+    // Check if the origin is allowed
     if (allowedOrigins.includes(origin)) {
       return callback(null, true);
     } else {
       return callback(new Error('Not allowed by CORS'));
     }
   },
-  credentials: true // Allow credentials
+  credentials: true, // Allow credentials
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow these HTTP methods
+  allowedHeaders: ['Content-Type', 'Authorization'], // Allow these headers
 }));
 
 // Deprecation
