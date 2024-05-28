@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({ firstName, lastName, email, password }),
+          credentials: 'include', // Fixing CORS
         });
 
         const data = await response.json();
@@ -56,6 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({ email, password }),
+          credentials: 'include', // Fixing CORS
         });
 
         const data = await response.json();

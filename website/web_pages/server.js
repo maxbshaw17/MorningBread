@@ -1,5 +1,7 @@
 const express = require('express');
 const app = express();
+const https = require('https');
+const fs = require('fs');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const session = require('express-session');
@@ -31,10 +33,24 @@ app.use(
       }
     },
     credentials: true, // Allow credentials
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
+    optionsSuccessStatus: 200, // For legacy browser support
   })
 );
+
+// Additional middleware to handle preflight OPTIONS request
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", allowedOrigins.join(', '));
+  res.header("Access-Control-Allow-Credentials", "true");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+  if (req.method === 'OPTIONS') {
+    res.sendStatus(200);
+  } else {
+    next();
+  }
+});
 
 // Deprecation
 mongoose.set('strictQuery', false);
@@ -149,7 +165,13 @@ app.post('/login', async (req, res) => {
   }
 });
 
+// HTTPS configuration
+const options = {
+  key: fs.readFileSync('server.key'),
+  cert: fs.readFileSync('server.cert')
+};
+
 // Start the server
-app.listen(3001, () => {
-  console.log('Server started on port 3001');
+https.createServer(options, app).listen(3001, () => {
+  console.log('HTTPS Server started on port 3001');
 });
