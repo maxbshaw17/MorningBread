@@ -1,5 +1,7 @@
 const express = require('express');
 const app = express();
+const https = require('https');
+const fs = require('fs');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const session = require('express-session');
@@ -8,17 +10,41 @@ const cors = require('cors');
 const csrf = require('csurf');
 const helmet = require('helmet');
 
-// Middleware
-app.use(cors());
-app.use(helmet());
+// CORS Configuration
+app.use(cors({
+  origin: 'http://127.0.0.1:3000', // Allow only this origin
+  credentials: true,
+  optionsSuccessStatus: 200, // For legacy browser support
+}));
 
-// Connect to MongoDB
-mongoose.connect('mongodb://localhost/myapp', {
+// Additional CORS middleware for preflight requests
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+  }
+  if (req.method === 'OPTIONS') {
+    res.sendStatus(204); // No content for preflight requests
+  } else {
+    next();
+  }
+});
+
+// Deprecation
+mongoose.set('strictQuery', false);
+
+mongoose.connect('mongodb://localhost:27017/', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
   .then(() => console.log('MongoDB connected'))
-  .catch(err => console.log(err));
+  .catch(err => {
+    console.error('MongoDB connection error:', err);
+    process.exit(1); // Exit the process if there's an error
+  });
 
 // User schema
 const userSchema = new mongoose.Schema({
@@ -121,6 +147,6 @@ app.post('/login', async (req, res) => {
 });
 
 // Start the server
-app.listen(3000, () => {
-  console.log('Server started on port 3000');
-});
+app.listen(3001, () => {
+  console.log('Server started on port 3001');
+}); 

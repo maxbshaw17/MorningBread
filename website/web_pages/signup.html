@@ -1,55 +1,63 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <link rel="icon" href="morningbread.png">
-        <title>MorningBread | Sign Up</title>
-        <link href="style.css" type="text/css" rel="stylesheet">
-    </head>
-    <body>
-    <header>
-    <h1><a href = 'main.html' class = 'active'>MorningBread</a></h1>
-        <ul class="navigation_profile">
-            <li><a id='currentDate'>Date</a></li>
-            <li><a href= 'profile.html' id='profile'>Profile</a></li>
-            <script src="script.js"></script>
-      </ul>
-    </header>
-    <div class = 'card_signup'>
-        <img class = 'logo' src = 'morningbread.png' />
-        <h2>Create an Account</h2>
-        <form class = 'form_signup'>
-            <div class="name-fields">
-                <div class="input-container">
-                  <input type="text" id="firstName" name="firstName" placeholder="First Name" required>
-                </div>
-                <div class="input-container">
-                  <input type="text" id="lastName" name="lastName" placeholder="Last Name" required>
-                </div>
-              </div>
-            <input 
-                type = "email"
-                placeholder = "Email" />
-            <input 
-                type = "password"
-                placeholder = "Password" />
-                <i class="far fa-eye" id="togglePassword" style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;"></i>
-            <input 
-                type = "password"
-                id = "confirmPassword"
-                placeholder="Confirm Password">
-            <button>Create Account</button>
-        </form>
-        <div class = 'signup_footer'>
-            Already have an account? Sign in
-            <a href='profile.html'>here</a>
+<head>
+    <link rel="icon" href="morningbread.png">
+    <title>MorningBread | Sign Up</title>
+    <link href="style.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+<header>
+    <h1><a href='index.html' class='active'>MorningBread</a></h1>
+    <ul class="navigation_profile">
+        <li><a id='currentDate'>Date</a></li>
+        <li><a href='profile.html' id='profile'>Profile</a></li>
+        <script src="script.js"></script>
+    </ul>
+</header>
+<div class='card_signup'>
+    <img class='logo' src='morningbread.png'/>
+    <h2>Create an Account</h2>
+    <form class='form_signup' action="/signup" method="POST">
+        <div class="name-fields">
+            <div class="input-container">
+                <input type="text" id="firstName" name="firstName" placeholder="First Name" required>
+            </div>
+            <div class="input-container">
+                <input type="text" id="lastName" name="lastName" placeholder="Last Name" required>
+            </div>
         </div>
+        <input 
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Email"
+            required />
+        <input 
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Password"
+            required />
+        <i class="far fa-eye" id="togglePassword" style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;"></i>
+        <input 
+            type="password"
+            id="confirmPassword"
+            name="confirmPassword"
+            placeholder="Confirm Password"
+            required>
+        <button type="submit">Create Account</button>
+    </form>
+    <div class='signup_footer'>
+        Already have an account? Sign in
+        <a href='profile.html'>here</a>
     </div>
-    <footer>
-        <a href = 'https://github.com/maxbshaw17/MorningBread' target = '_blank'>
-            <img src = 'https://cdn-icons-png.flaticon.com/512/25/25231.png'
-            height = "36"></a>
-            <h3><a href = 'contact.html' class = 'active'>Contact Us</a></h3>
-    </footer>
-    <script src = 'signup.js'></script>
-    </body>
+</div>
+<footer>
+    <a href='https://github.com/maxbshaw17/MorningBread' target='_blank'>
+        <img src='https://cdn-icons-png.flaticon.com/512/25/25231.png'
+             height="36"></a>
+    <h3><a href='contact.html' class='active'>Contact Us</a></h3>
+</footer>
+<script src='signup.js'></script>
+</body>
 </html>

@@ -18,12 +18,13 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       try {
-        const response = await fetch('/signup', {
+        const response = await fetch('http://127.0.0.1:3001/signup', { 
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({ firstName, lastName, email, password }),
+          credentials: 'include', // Fixing CORS
         });
 
         const data = await response.json();
@@ -50,12 +51,13 @@ document.addEventListener('DOMContentLoaded', () => {
       const password = document.querySelector('.form_login input[type="password"]').value;
 
       try {
-        const response = await fetch('/login', {
+        const response = await fetch('http://127.0.0.1:3001/login', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({ email, password }),
+          credentials: 'include', // Fixing CORS
         });
 
         const data = await response.json();
