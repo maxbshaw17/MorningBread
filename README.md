@@ -4,7 +4,7 @@ To provide a personalized morning finanical report to our users.
 
 ## Description
 
-Utilizing a web scraping tool for financial website articles to find the general topics of the articles. In doing so, creating and designing a website to give the public a  general grasp of financial news for the day, over the course of the day with hourly, highly summarized news headlines/stock tickers. An account system will allow users to follow certain companies and manage tickers. 
+Utilizing a web scraping tool for financial website articles to find the general topics of the articles. Articles would be ran through a machine learning algorithm to group them together and create a summarized headline of all the web scraped articles. In doing so, creating and designing a website to give the public a general grasp of financial news for the day, over the course of the day with hourly, highly summarized news headlines with links to the original articles.
 
 ## Getting Started
 
@@ -23,7 +23,7 @@ Maximilian Bradshaw and Jake Dorick
 
 ## Version History
 
-0.0
+v1.0.0
 
 ## Acknowledgments
 
